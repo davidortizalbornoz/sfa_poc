@@ -1,0 +1,47 @@
+eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJBQkdydE9CQ2x0MHJaRm1uSXlvbDJxWkhoV1R3M0xQU05EYXVjSkZpbldvIn0.eyJleHAiOjE3ODQ5NDExMjEsImlhdCI6MTc4NDk0MDgyMSwiYXV0aF90aW1lIjoxNzg0OTQwODE1LCJqdGkiOiJvbnJ0YWM6OTkzYWUyZjItZmIzNS00NmYzLTk5YWQtMmUzZWJkNmMxNmQzIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL3JlYWxtcy9zZmEtcG9jIiwiYXVkIjoicmVzb3VyY2Utc2VydmVyIiwic3ViIjoiNDMyYWQ5MWUtOTllMy00N2ZmLTk4NjAtMzUyOGNkZDgwYzJmIiwidHlwIjoiRFBvUCIsImF6cCI6InRwcC1kZW1vIiwic2lkIjoiZDZmYWU2NzctZDkxZC00OTUwLTkwOGUtZjYzYTMyMzBlNWZlIiwiYWNyIjoiMSIsImFsbG93ZWQtb3JpZ2lucyI6WyJodHRwOi8vMTI3LjAuMC4xOjMwMDAiLCJodHRwOi8vbG9jYWxob3N0OjMwMDAiXSwiY25mIjp7ImprdCI6ImlxVmFHYkFmdUZ3enIzeDRtdVJhRTZOZ0ctSVM2VENOQVY0MWJXZHZuZEkifSwic2NvcGUiOiJvcGVuaWQgYWNjb3VudHM6cmVhZCBwcm9maWxlIGVtYWlsIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsIm5hbWUiOiJEZW1vIFVzZXIiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJkZW1vLXVzZXIiLCJnaXZlbl9uYW1lIjoiRGVtbyIsImxvY2FsZSI6ImVzIiwiZmFtaWx5X25hbWUiOiJVc2VyIiwiZW1haWwiOiJkZW1vLXVzZXJAc2ZhLXBvYy5sb2NhbCJ9.PbFTPCEqwIf6BTOTmuMZvsoQiMQU1JBg6TnMwBtwcx3MCKziKEtgGMTvtwsZ9QEn6oW2KEVjKi82q6RUCPN6kjfu4gdKMAeia1GiwKMYXNhZbvCwWHPn41wF58Bv5B-s6TlVkjgLfJT43vsJd1LkeCekquBaFInDOM4pc5Ye84zbMQ2dmWNBS7TdWtnLwjfrb675XnkYXg_lfRG8ZCWza4fhFY5MlrilGhCGVvWC7efWyAP7lWbDrFo9sFGWpstq4FC_aLKEe3o_dMn_Jd_KJZ7asLqcFB7dQc7fWoGCm8IyYbhLNdaA9b-iXOMsMeQpk5qAL5VEzxzvSMDN_i89hA
+
+{
+  "alg": "RS256",
+  "typ": "JWT",
+  "kid": "ABGrtOBClt0rZFmnIyol2qZHhWTw3LPSNDaucJFinWo"
+}
+
+{
+  "exp": 1784941121,
+  "iat": 1784940821,
+  "auth_time": 1784940815,
+  "jti": "onrtac:993ae2f2-fb35-46f3-99ad-2e3ebd6c16d3",
+  "iss": "http://localhost:8080/realms/sfa-poc",
+  "aud": "resource-server",
+  "sub": "432ad91e-99e3-47ff-9860-3528cdd80c2f",
+  "typ": "DPoP",
+  "azp": "tpp-demo",
+  "sid": "d6fae677-d91d-4950-908e-f63a3230e5fe",
+  "acr": "1",
+  "allowed-origins": [
+    "http://127.0.0.1:3000",
+    "http://localhost:3000"
+  ],
+  "cnf": {
+    "jkt": "iqVaGbAfuFwzr3x4muRaE6NgG-IS6TCNAV41bWdvndI"
+  },
+  "scope": "openid accounts:read profile email",
+  "email_verified": true,
+  "name": "Demo User",
+  "preferred_username": "demo-user",
+  "given_name": "Demo",
+  "locale": "es",
+  "family_name": "User",
+  "email": "demo-user@sfa-poc.local"
+}
+
+
+-----BEGIN PUBLIC KEY-----
+MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEApSdKoWyWCk4v3EEjcorr
+Jdp2Hx6Dfo8Q7mdpFEevsj9IBFqcvO5MT6CU88U1tgD/vT/m8RdfuCC2Mf4CyfJe
+PRjkZW1aMd6yMK9XwnwZ+csaqHCAzJsDuNrg66J3xzhSNGg1WIYFHAf5+i49usOc
+btjsINr0aNd6SmhtI3tq2kanlWJkByJdDXdkbrzYUVPC9htz28Z5UEP60rpD+R2x
+qvR5+DGwCbxq4ZNBJrmL2w2lgjdL1qftoME9WxpGFpsSpy9gxf+BnjZlc1mkTUXv
+aQ47cfnD06pDqevlBDoiONLL9jIMxqCouNhQZcR3LenJTQHAT6Pzpiy07Qdqfpl7
+fwIDAQAB
+-----END PUBLIC KEY-----

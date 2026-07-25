@@ -251,4 +251,4 @@ cliente OAuth funcional que complete el flujo PAR → login → code PKCE (S256)
 
 Servicio	
 PostgreSQL 16
-Keycloak 26.2.5
+Keycloak 26.2.5 (con algunas configuraciones FAPI & DPoP)

@@ -1,0 +1,43 @@
+eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICIyQlhudUZsUHg3YXBwRzhSQzVCN1NweVBLTldBNmNHYlNXdDNLNnlzSV8wIn0.eyJleHAiOjE3ODQ5MzA0NjQsImlhdCI6MTc4NDkzMDE2NCwiYXV0aF90aW1lIjoxNzg0OTMwMTU4LCJqdGkiOiJvbnJ0YWM6YzIyMTk0MmItODJjZS00ZDc5LTlkNTQtNGE1M2E0OGE5YjEyIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL3JlYWxtcy9zZmEtcG9jIiwiYXVkIjoicmVzb3VyY2Utc2VydmVyIiwic3ViIjoiOGM1MDczNTgtYzMxYi00MmJiLWIyYzctNGRhZTljOTUxMDQwIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoidHBwLWRlbW8iLCJzaWQiOiJkNjEwZTgxNC0zYjMwLTRiNjItYmE4Yy01MjBlODdkZmY0YTAiLCJhY3IiOiIxIiwiYWxsb3dlZC1vcmlnaW5zIjpbImh0dHA6Ly8xMjcuMC4wLjE6MzAwMCIsImh0dHA6Ly9sb2NhbGhvc3Q6MzAwMCJdLCJzY29wZSI6Im9wZW5pZCBhY2NvdW50czpyZWFkIHByb2ZpbGUgZW1haWwiLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwibmFtZSI6IkRlbW8gVXNlciIsInByZWZlcnJlZF91c2VybmFtZSI6ImRlbW8tdXNlciIsImxvY2FsZSI6ImVzIiwiZ2l2ZW5fbmFtZSI6IkRlbW8iLCJmYW1pbHlfbmFtZSI6IlVzZXIiLCJlbWFpbCI6ImRlbW8tdXNlckBzZmEtcG9jLmxvY2FsIn0.kfkXnDg9sThLfOBRjn56WjioK5VB7VhgkpkCRhz5A_AyImu_Gf755fKwE6o2Kh5ajYnnnaS_R3Wb3H0vK0Tyy60z_tUqnq0ACCT2XPGIVUADqgSQQ-1fFV6bRnskqj9hziNpT-D3ZuyOsSu8cJp3YAEBednJk9u_7h4n0ZkxHwiPk7n28Q1iKXQBq1fM-KEsXpGqkWLHZyXXWi7MSMuGYV8EFcoEWCFObm-aE9f6FrN0AG3srAraAI1T-FCks33wRQqXIqg-bNgF4A3BZKNItHIIpHYqT_hd5DRH1ZhPbad0ZjtkAxeEAGKtTKJJ2y8Yp7geUd8XY9bFnxaMufmxBg
+
+{
+  "alg": "RS256",
+  "typ": "JWT",
+  "kid": "2BXnuFlPx7appG8RC5B7SpyPKNWA6cGbSWt3K6ysI_0"
+}
+
+{
+  "exp": 1784930464,
+  "iat": 1784930164,
+  "auth_time": 1784930158,
+  "jti": "onrtac:c221942b-82ce-4d79-9d54-4a53a48a9b12",
+  "iss": "http://localhost:8080/realms/sfa-poc",
+  "aud": "resource-server",
+  "sub": "8c507358-c31b-42bb-b2c7-4dae9c951040",
+  "typ": "Bearer",
+  "azp": "tpp-demo",
+  "sid": "d610e814-3b30-4b62-ba8c-520e87dff4a0",
+  "acr": "1",
+  "allowed-origins": [
+    "http://127.0.0.1:3000",
+    "http://localhost:3000"
+  ],
+  "scope": "openid accounts:read profile email",
+  "email_verified": true,
+  "name": "Demo User",
+  "preferred_username": "demo-user",
+  "locale": "es",
+  "given_name": "Demo",
+  "family_name": "User",
+  "email": "demo-user@sfa-poc.local"
+}
+
+-----BEGIN PUBLIC KEY-----
+MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAyjEUth/S1H1ixQqXm5lE
+cA1v2AF05mEks7w6Ggqp9mmu+hq6cPxCIU0bz6tXcg+fN1M2f8+rofz0dFDP1G/b
+mNxnYLqOGkfN4l515DSEXGazyycYR9SNSxD1Vctthe8PWskVGQp6Nw0uBXBQ2vEv
+OunIe9sJA8rMvXeCwX/o80NqTy6bDJL5KKkZRnNNrl4CeBvR02djoGB7Dg8tGlD0
+fAnlFfmr1/CAUfhTM/oeyOnXH1wDSVXm2bHJ3QrhD6KSJhrL20fw0tLj1Dx+T4/e
+9pVMt4q1/yCGBrYEoy3CH1PJYfh24rzq5rdDR27vF/58yOGIfPmMLbishsDK0dtt
+tQIDAQAB
+-----END PUBLIC KEY-----
