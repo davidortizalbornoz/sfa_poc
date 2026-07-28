@@ -3,9 +3,15 @@ import {
   generateKeyPairSync,
   randomBytes,
   sign,
+  type JsonWebKey,
 } from "node:crypto";
+import type {
+  CreateDpopProofOptions,
+  DpopKeyPair,
+  DpopPublicJwk,
+} from "./types.js";
 
-function base64UrlEncode(value) {
+function base64UrlEncode(value: Buffer | string): string {
   const buffer = Buffer.isBuffer(value) ? value : Buffer.from(value, "utf8");
   return buffer
     .toString("base64")
@@ -14,7 +20,11 @@ function base64UrlEncode(value) {
     .replace(/=+$/, "");
 }
 
-function toPublicJwk(jwk) {
+function toPublicJwk(jwk: JsonWebKey): DpopPublicJwk {
+  if (jwk.kty !== "EC" || !jwk.crv || !jwk.x || !jwk.y) {
+    throw new Error("Clave DPoP invalida: se esperaba EC P-256");
+  }
+
   return {
     kty: jwk.kty,
     crv: jwk.crv,
@@ -23,7 +33,7 @@ function toPublicJwk(jwk) {
   };
 }
 
-export function computeJwkThumbprint(jwk) {
+export function computeJwkThumbprint(jwk: DpopPublicJwk): string {
   const canonical = JSON.stringify({
     crv: jwk.crv,
     kty: jwk.kty,
@@ -34,7 +44,7 @@ export function computeJwkThumbprint(jwk) {
   return createHash("sha256").update(canonical).digest("base64url");
 }
 
-export function createDpopKeyPair() {
+export function createDpopKeyPair(): DpopKeyPair {
   const { publicKey, privateKey } = generateKeyPairSync("ec", {
     namedCurve: "P-256",
   });
@@ -56,7 +66,7 @@ export function createDpopProof({
   url,
   accessToken,
   nonce,
-}) {
+}: CreateDpopProofOptions): string {
   const header = {
     typ: "dpop+jwt",
     alg: "ES256",
@@ -67,7 +77,7 @@ export function createDpopProof({
   target.search = "";
   target.hash = "";
 
-  const payload = {
+  const payload: Record<string, string | number> = {
     jti: base64UrlEncode(randomBytes(16)),
     htm: method.toUpperCase(),
     htu: target.toString(),

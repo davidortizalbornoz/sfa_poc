@@ -10,10 +10,7 @@ import { createPublicKey, type JsonWebKey } from 'node:crypto';
 import type { Request } from 'express';
 import { passportJwtSecret } from 'jwks-rsa';
 import { ExtractJwt, Strategy } from 'passport-jwt';
-import {
-  buildRequestTargetUri,
-  validateDpopProof,
-} from './dpop.validator';
+import { buildRequestTargetUri, validateDpopProof } from './dpop.validator';
 import { AuthenticatedUser } from './authenticated-user.interface';
 
 interface KeycloakAccessTokenPayload {

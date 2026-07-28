@@ -1,22 +1,39 @@
-import { createServer } from "node:http";
 import { execFile } from "node:child_process";
+import { createServer } from "node:http";
 import { promisify } from "node:util";
 import { loadConfig } from "./config.js";
 import { createDpopKeyPair, createDpopProof } from "./dpop.js";
 import { createPkcePair, createState } from "./pkce.js";
+import type {
+  AppConfig,
+  DpopKeyPair,
+  JwtPayload,
+  OAuthErrorBody,
+  ParResponse,
+  TokenResponse,
+} from "./types.js";
 
 const execFileAsync = promisify(execFile);
 
-function decodeJwtPayload(token) {
+function decodeJwtPayload(token: string): JwtPayload | null {
   const [, payload] = token.split(".");
   if (!payload) {
     return null;
   }
 
-  return JSON.parse(Buffer.from(payload, "base64url").toString("utf8"));
+  return JSON.parse(
+    Buffer.from(payload, "base64url").toString("utf8"),
+  ) as JwtPayload;
 }
 
-async function pushAuthorizationRequest(config, { codeChallenge, state, dpopJkt }) {
+async function pushAuthorizationRequest(
+  config: AppConfig,
+  {
+    codeChallenge,
+    state,
+    dpopJkt,
+  }: { codeChallenge: string; state: string; dpopJkt: string },
+): Promise<ParResponse> {
   const body = new URLSearchParams({
     client_id: config.clientId,
     client_secret: config.clientSecret,
@@ -39,17 +56,19 @@ async function pushAuthorizationRequest(config, { codeChallenge, state, dpopJkt 
   });
 
   const text = await response.text();
-  let data;
+  let data: ParResponse & OAuthErrorBody;
 
   try {
-    data = JSON.parse(text);
+    data = JSON.parse(text) as ParResponse & OAuthErrorBody;
   } catch {
-    throw new Error(`PAR respondio contenido no JSON (${response.status}): ${text}`);
+    throw new Error(
+      `PAR respondio contenido no JSON (${response.status}): ${text}`,
+    );
   }
 
   if (!response.ok) {
     throw new Error(
-      `PAR fallo (${response.status}): ${data.error ?? "unknown"} - ${data.error_description ?? text}`
+      `PAR fallo (${response.status}): ${data.error ?? "unknown"} - ${data.error_description ?? text}`,
     );
   }
 
@@ -60,14 +79,21 @@ async function pushAuthorizationRequest(config, { codeChallenge, state, dpopJkt 
   return data;
 }
 
-function buildAuthorizeUrl(config, requestUri) {
+function buildAuthorizeUrl(config: AppConfig, requestUri: string): string {
   const url = new URL(config.endpoints.authorize);
   url.searchParams.set("client_id", config.clientId);
   url.searchParams.set("request_uri", requestUri);
   return url.toString();
 }
 
-async function exchangeCodeForTokens(config, { code, codeVerifier, dpopKeys }) {
+async function exchangeCodeForTokens(
+  config: AppConfig,
+  {
+    code,
+    codeVerifier,
+    dpopKeys,
+  }: { code: string; codeVerifier: string; dpopKeys: DpopKeyPair },
+): Promise<TokenResponse> {
   const body = new URLSearchParams({
     grant_type: "authorization_code",
     client_id: config.clientId,
@@ -95,24 +121,30 @@ async function exchangeCodeForTokens(config, { code, codeVerifier, dpopKeys }) {
   });
 
   const text = await response.text();
-  let data;
+  let data: TokenResponse;
 
   try {
-    data = JSON.parse(text);
+    data = JSON.parse(text) as TokenResponse;
   } catch {
-    throw new Error(`Token endpoint respondio contenido no JSON (${response.status}): ${text}`);
+    throw new Error(
+      `Token endpoint respondio contenido no JSON (${response.status}): ${text}`,
+    );
   }
 
   if (!response.ok) {
     throw new Error(
-      `Intercambio de token fallo (${response.status}): ${data.error ?? "unknown"} - ${data.error_description ?? text}`
+      `Intercambio de token fallo (${response.status}): ${data.error ?? "unknown"} - ${data.error_description ?? text}`,
     );
   }
 
   return data;
 }
 
-function createResourceDpopProof(dpopKeys, accessToken, url) {
+function createResourceDpopProof(
+  dpopKeys: DpopKeyPair,
+  accessToken: string,
+  url: string,
+): string {
   return createDpopProof({
     privateKey: dpopKeys.privateKey,
     publicJwk: dpopKeys.publicJwk,
@@ -122,7 +154,11 @@ function createResourceDpopProof(dpopKeys, accessToken, url) {
   });
 }
 
-function printResourceServerRequest(accessToken, dpopProof, url) {
+function printResourceServerRequest(
+  accessToken: string,
+  dpopProof: string,
+  url: string,
+): void {
   console.log("");
   console.log("=== DPoP proof para Resource Server ===");
   console.log(`resource_url:   ${url}`);
@@ -134,10 +170,18 @@ function printResourceServerRequest(accessToken, dpopProof, url) {
   console.log(`  -H "DPoP: ${dpopProof}" \\`);
   console.log(`  -H "Accept: application/json"`);
   console.log("");
-  console.log("(El proof expira en ~5 min; genera uno nuevo por request si falla.)");
+  console.log(
+    "(El proof expira en ~5 min; genera uno nuevo por request si falla.)",
+  );
 }
 
-async function callProtectedResource(config, { accessToken, dpopKeys, url }) {
+async function callProtectedResource(
+  { accessToken, dpopKeys, url }: {
+    accessToken: string;
+    dpopKeys: DpopKeyPair;
+    url: string;
+  },
+): Promise<unknown> {
   const dpopProof = createResourceDpopProof(dpopKeys, accessToken, url);
 
   const response = await fetch(url, {
@@ -150,28 +194,34 @@ async function callProtectedResource(config, { accessToken, dpopKeys, url }) {
   });
 
   const text = await response.text();
-  let data;
+  let data: unknown;
 
   try {
-    data = JSON.parse(text);
+    data = JSON.parse(text) as unknown;
   } catch {
     data = text;
   }
 
   if (!response.ok) {
     throw new Error(
-      `Resource Server respondio error (${response.status}): ${typeof data === "string" ? data : JSON.stringify(data)}`
+      `Resource Server respondio error (${response.status}): ${typeof data === "string" ? data : JSON.stringify(data)}`,
     );
   }
 
   return data;
 }
 
-function waitForAuthorizationCode(config, expectedState) {
+function waitForAuthorizationCode(
+  config: AppConfig,
+  expectedState: string,
+): Promise<string> {
   return new Promise((resolve, reject) => {
     const server = createServer(async (req, res) => {
       try {
-        const requestUrl = new URL(req.url ?? "/", `http://${config.callbackHost}:${config.callbackPort}`);
+        const requestUrl = new URL(
+          req.url ?? "/",
+          `http://${config.callbackHost}:${config.callbackPort}`,
+        );
 
         if (requestUrl.pathname !== new URL(config.redirectUri).pathname) {
           res.writeHead(404, { "Content-Type": "text/plain; charset=utf-8" });
@@ -181,7 +231,8 @@ function waitForAuthorizationCode(config, expectedState) {
 
         const error = requestUrl.searchParams.get("error");
         if (error) {
-          const description = requestUrl.searchParams.get("error_description") ?? "";
+          const description =
+            requestUrl.searchParams.get("error_description") ?? "";
           throw new Error(`${error}${description ? `: ${description}` : ""}`);
         }
 
@@ -193,7 +244,9 @@ function waitForAuthorizationCode(config, expectedState) {
         }
 
         if (state !== expectedState) {
-          throw new Error("State invalido: posible ataque CSRF o sesion mezclada");
+          throw new Error(
+            "State invalido: posible ataque CSRF o sesion mezclada",
+          );
         }
 
         res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
@@ -207,9 +260,13 @@ function waitForAuthorizationCode(config, expectedState) {
 </html>`);
 
         server.close(() => resolve(code));
-      } catch (callbackError) {
+      } catch (callbackError: unknown) {
+        const message =
+          callbackError instanceof Error
+            ? callbackError.message
+            : String(callbackError);
         res.writeHead(400, { "Content-Type": "text/plain; charset=utf-8" });
-        res.end(`Error: ${callbackError.message}`);
+        res.end(`Error: ${message}`);
         server.close(() => reject(callbackError));
       }
     });
@@ -222,7 +279,7 @@ function waitForAuthorizationCode(config, expectedState) {
   });
 }
 
-async function openBrowser(url) {
+async function openBrowser(url: string): Promise<void> {
   if (process.platform === "darwin") {
     await execFileAsync("open", [url]);
     return;
@@ -236,7 +293,7 @@ async function openBrowser(url) {
   await execFileAsync("xdg-open", [url]);
 }
 
-async function main() {
+async function main(): Promise<void> {
   const config = loadConfig();
   const { codeVerifier, codeChallenge } = createPkcePair();
   const state = createState();
@@ -251,39 +308,49 @@ async function main() {
   console.log(`DPoP jkt:   ${dpopKeys.dpopJkt}`);
   console.log("");
 
-  console.log(`1/${totalSteps} Enviando Pushed Authorization Request (PAR + dpop_jkt)...`);
+  console.log(
+    `1/${totalSteps} Enviando Pushed Authorization Request (PAR + dpop_jkt)...`,
+  );
   const parResponse = await pushAuthorizationRequest(config, {
     codeChallenge,
     state,
     dpopJkt: dpopKeys.dpopJkt,
   });
-  console.log(`    request_uri recibido (expira en ${parResponse.expires_in}s)`);
+  console.log(
+    `    request_uri recibido (expira en ${parResponse.expires_in}s)`,
+  );
 
   const authorizeUrl = buildAuthorizeUrl(config, parResponse.request_uri);
 
   console.log(`2/${totalSteps} Esperando callback OAuth...`);
   const callbackPromise = waitForAuthorizationCode(config, state);
 
-  console.log(`3/${totalSteps} Abriendo navegador para login/consentimiento...`);
+  console.log(
+    `3/${totalSteps} Abriendo navegador para login/consentimiento...`,
+  );
   console.log(`    ${authorizeUrl}`);
   await openBrowser(authorizeUrl);
 
   const code = await callbackPromise;
   console.log("    Authorization code recibido");
 
-  console.log(`4/${totalSteps} Intercambiando code por tokens (header DPoP)...`);
-  const tokens = await exchangeCodeForTokens(config, { code, codeVerifier, dpopKeys });
+  console.log(
+    `4/${totalSteps} Intercambiando code por tokens (header DPoP)...`,
+  );
+  const tokens = await exchangeCodeForTokens(config, {
+    code,
+    codeVerifier,
+    dpopKeys,
+  });
 
   console.log("");
   console.log("=== Tokens obtenidos ===");
   console.log(`token_type:     ${tokens.token_type}`);
   console.log(`expires_in:     ${tokens.expires_in}s`);
   console.log(`scope:          ${tokens.scope ?? "(no reportado)"}`);
-  //console.log(`access_token:   ${tokens.access_token?.slice(0, 48)}...`);
   console.log(`access_token:   ${tokens.access_token}`);
 
   if (tokens.refresh_token) {
-    //console.log(`refresh_token:  ${tokens.refresh_token.slice(0, 48)}...`);
     console.log(`refresh_token:  ${tokens.refresh_token}`);
   }
 
@@ -304,9 +371,11 @@ async function main() {
 
     if (config.resourceServerUrl) {
       console.log("");
-      console.log(`5/${totalSteps} Llamando Resource Server con Authorization: DPoP...`);
+      console.log(
+        `5/${totalSteps} Llamando Resource Server con Authorization: DPoP...`,
+      );
       console.log(`    GET ${config.resourceServerUrl}`);
-      const resourceData = await callProtectedResource(config, {
+      const resourceData = await callProtectedResource({
         accessToken: tokens.access_token,
         dpopKeys,
         url: config.resourceServerUrl,
@@ -321,8 +390,9 @@ async function main() {
   console.log("Flujo completado.");
 }
 
-main().catch((error) => {
+main().catch((error: unknown) => {
+  const message = error instanceof Error ? error.message : String(error);
   console.error("");
-  console.error(`Error: ${error.message}`);
+  console.error(`Error: ${message}`);
   process.exit(1);
 });

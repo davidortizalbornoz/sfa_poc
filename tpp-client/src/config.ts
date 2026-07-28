@@ -1,4 +1,6 @@
-function required(name) {
+import type { AppConfig } from "./types.js";
+
+function required(name: string): string {
   const value = process.env[name];
   if (!value) {
     throw new Error(`Falta la variable de entorno ${name}`);
@@ -6,7 +8,7 @@ function required(name) {
   return value;
 }
 
-export function loadConfig() {
+export function loadConfig(): AppConfig {
   const baseUrl = required("KEYCLOAK_BASE_URL").replace(/\/$/, "");
   const realm = required("KEYCLOAK_REALM");
 

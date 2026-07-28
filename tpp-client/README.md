@@ -1,8 +1,6 @@
 # TPP Client — Authorization Code + PAR + PKCE + DPoP
 
-# TPP Client — Authorization Code + PAR + PKCE + DPoP
-
-Cliente de línea de comandos en **Node.js** que simula un **Third Party Provider (TPP)** contra Keycloak.
+Cliente de línea de comandos en **Node.js + TypeScript** que simula un **Third Party Provider (TPP)** contra Keycloak.
 
 Implementa el flujo:
 
@@ -62,7 +60,9 @@ Variables por defecto (`.env`):
 Desde el directorio `tpp-client`:
 
 ```bash
+cd tpp-client
 nvm use          # recomendado: activa Node 20 desde .nvmrc
+npm install      # solo la primera vez (TypeScript + tsx)
 npm start
 ```
 
@@ -134,16 +134,24 @@ Flujo completado.
 tpp-client/
 ├── .env              # Configuración local (no commitear secretos reales)
 ├── .env.example      # Plantilla
-├── .nvmrc            # Node 20
 ├── package.json
+├── tsconfig.json
 └── src/
-    ├── config.js     # Carga de variables y URLs OIDC
-    ├── dpop.js       # Claves ES256, dpop_jkt y proofs DPoP
-    ├── pkce.js       # Generación PKCE + state
-    └── index.js      # Flujo PAR → browser → token → API (opcional)
+    ├── types.ts      # Tipos compartidos (config, OAuth, DPoP)
+    ├── config.ts     # Carga de variables y URLs OIDC
+    ├── dpop.ts       # Claves ES256, dpop_jkt y proofs DPoP
+    ├── pkce.ts       # Generación PKCE + state
+    └── index.ts      # Flujo PAR → browser → token → API (opcional)
 ```
 
-No hay dependencias npm externas: usa **fetch** nativo y **`--env-file`** de Node 20+.
+Dependencias de desarrollo: **TypeScript**, **tsx** (ejecución directa de `.ts`) y **@types/node**. En runtime usa **fetch** nativo y **`--env-file`** de Node 20+.
+
+Compilar a JavaScript (opcional):
+
+```bash
+npm run build
+npm run start:prod
+```
 
 ## Solución de problemas
 

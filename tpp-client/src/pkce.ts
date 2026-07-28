@@ -1,6 +1,7 @@
-import { randomBytes, createHash } from "node:crypto";
+import { createHash, randomBytes } from "node:crypto";
+import type { PkcePair } from "./types.js";
 
-function base64UrlEncode(buffer) {
+function base64UrlEncode(buffer: Buffer): string {
   return buffer
     .toString("base64")
     .replace(/\+/g, "-")
@@ -8,15 +9,15 @@ function base64UrlEncode(buffer) {
     .replace(/=+$/, "");
 }
 
-export function createPkcePair() {
+export function createPkcePair(): PkcePair {
   const codeVerifier = base64UrlEncode(randomBytes(32));
   const codeChallenge = base64UrlEncode(
-    createHash("sha256").update(codeVerifier).digest()
+    createHash("sha256").update(codeVerifier).digest(),
   );
 
   return { codeVerifier, codeChallenge };
 }
 
-export function createState() {
+export function createState(): string {
   return base64UrlEncode(randomBytes(24));
 }
