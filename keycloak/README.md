@@ -215,6 +215,15 @@ Causas frecuentes: poca memoria en Docker o PostgreSQL no disponible. Sube RAM e
 - Accede siempre por http://localhost:8080/admin
 - Confirma `KC_HOSTNAME=http://localhost:8080` en `.env`
 
+### Convivencia con bci-idp (sesiones que se pierden)
+
+Si **sfa-poc** y **bci-idp** están activos a la vez, no uses `localhost` para ambos: el navegador comparte cookies de sesión entre puertos del mismo dominio.
+
+- **sfa-poc:** `http://localhost:8080`
+- **bci-idp:** `http://127.0.0.1:5050` (ver [README.md](../README.md#convivencia-de-sesiones))
+
+Acceder a bci-idp vía `localhost:5050` invalidará la sesión de sfa-poc y viceversa.
+
 ### Puerto 8080 ocupado
 
 Cambia el mapeo en `docker-compose.yml` (ej. `"8081:8080"`) y actualiza `KC_HOSTNAME=http://localhost:8081`.

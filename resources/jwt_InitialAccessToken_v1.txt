@@ -1,0 +1,16 @@
+eyJhbGciOiJIUzUxMiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICI0ZTg4NmM0OS05OTQwLTQzNWUtODg2Mi0yYjc0YmE1ZGRlMjQifQ.eyJleHAiOjE3ODU0NTE1ODgsImlhdCI6MTc4NTM2NTE4OCwianRpIjoiOTAxMjlkYzEtYTA3ZS00MjE5LTg1ZmYtNWVmMzQ4NzU2NzY0IiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL3JlYWxtcy9zZmEtcG9jIiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL3JlYWxtcy9zZmEtcG9jIiwidHlwIjoiSW5pdGlhbEFjY2Vzc1Rva2VuIn0.jFcv-16DFMHwk-nwwj0V7moOeKAesmQlXEs3v_xxXn0pw3hWg9v0lWaT1yqs9b8FwQa5w5qRTp67XM2yVDYLHw
+
+{
+  "alg": "HS512",
+  "typ": "JWT",
+  "kid": "4e886c49-9940-435e-8862-2b74ba5dde24"
+}
+
+{
+  "exp": 1785451588,
+  "iat": 1785365188,
+  "jti": "90129dc1-a07e-4219-85ff-5ef348756764",
+  "iss": "http://localhost:8080/realms/sfa-poc",
+  "aud": "http://localhost:8080/realms/sfa-poc",
+  "typ": "InitialAccessToken"
+}

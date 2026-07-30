@@ -276,7 +276,9 @@ Resultado: **access_token JWT** usable contra un Resource Server.
 cliente OAuth funcional que complete el flujo PAR → login → code PKCE (S256) → token, para validar que tu Authorization Server está bien configurado
 
 
-# Flujo Authorization Code [PAR + LOGIN + PKCE (S256) + TOKEN + Verificación DPoP]
+# Flujo Authorization Code [PAR + LOGIN (Web) + (PKCE (S256) + [Proof + TOKEN]) + Verificación DPoP en ResourceServer]
+# Flujo Client Credentials [Proof + TOKEN + Verificación DPoP en ResourceServer]
+# Flujo DCR (Dynamic Client Registration) con SSA (Software Statement Assertion)
 
 Servicio	
 PostgreSQL 16

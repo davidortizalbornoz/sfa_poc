@@ -1,8 +1,8 @@
 {
-  "id": "sfa-poc",
-  "realm": "sfa-poc",
-  "displayName": "SFA POC",
-  "displayNameHtml": "<strong>SFA POC</strong>",
+  "id": "bci-idp",
+  "realm": "bci-idp",
+  "displayName": "BCI IDP",
+  "displayNameHtml": "<strong>BCI IDP</strong>",
   "enabled": true,
   "sslRequired": "none",
   "registrationAllowed": false,
@@ -80,13 +80,13 @@
       },
       {
         "name": "account-admin",
-        "description": "Administraci\u00f3n de cuentas en el POC",
+        "description": "Administración de cuentas en el POC",
         "composite": false,
         "clientRole": false
       },
       {
-        "name": "tpp-operator",
-        "description": "Operador de aplicaci\u00f3n TPP",
+        "name": "bci-operator",
+        "description": "Operador de aplicación BCI",
         "composite": false,
         "clientRole": false
       }
@@ -104,11 +104,11 @@
   },
   "groups": [
     {
-      "name": "tpp-users",
-      "path": "/tpp-users",
+      "name": "bci-users",
+      "path": "/bci-users",
       "realmRoles": [
         "account-viewer",
-        "tpp-operator"
+        "bci-operator"
       ],
       "clientRoles": {
         "resource-server": [
@@ -119,7 +119,7 @@
     }
   ],
   "defaultRole": {
-    "name": "default-roles-sfa-poc",
+    "name": "default-roles-bci-idp",
     "description": "${role_default-roles}",
     "composite": true,
     "clientRole": false
@@ -671,7 +671,7 @@
     },
     {
       "name": "accounts:read",
-      "description": "Permite leer informaci\u00f3n de cuentas",
+      "description": "Permite leer información de cuentas",
       "protocol": "openid-connect",
       "attributes": {
         "include.in.token.scope": "true",
@@ -695,7 +695,7 @@
     },
     {
       "name": "accounts:write",
-      "description": "Permite modificar informaci\u00f3n de cuentas",
+      "description": "Permite modificar información de cuentas",
       "protocol": "openid-connect",
       "attributes": {
         "include.in.token.scope": "true",
@@ -719,7 +719,7 @@
     },
     {
       "name": "payments:read",
-      "description": "Permite leer informaci\u00f3n de pagos",
+      "description": "Permite leer información de pagos",
       "protocol": "openid-connect",
       "attributes": {
         "include.in.token.scope": "true",
@@ -764,7 +764,7 @@
     {
       "clientId": "resource-server",
       "name": "Resource Server (API)",
-      "description": "Representaci\u00f3n l\u00f3gica del API protegido (audience de tokens)",
+      "description": "Representación lógica del API protegido (audience de tokens)",
       "enabled": true,
       "protocol": "openid-connect",
       "publicClient": false,
@@ -794,14 +794,14 @@
       ]
     },
     {
-      "clientId": "tpp-demo",
-      "name": "TPP Demo (Confidential)",
+      "clientId": "bci-demo",
+      "name": "BCI Demo (Confidential)",
       "description": "Cliente OAuth confidential con client secret. Base para FAPI Authorization Code + PAR.",
       "enabled": true,
       "protocol": "openid-connect",
       "publicClient": false,
       "clientAuthenticatorType": "client-secret",
-      "secret": "tpp-demo-secret-local-dev",
+      "secret": "bci-demo-secret-local-dev",
       "redirectUris": [
         "http://localhost:3000/*",
         "http://localhost:3000/callback",
@@ -829,8 +829,7 @@
         "backchannel.logout.revoke.offline.tokens": "false",
         "post.logout.redirect.uris": "http://localhost:3000/*##http://127.0.0.1:3000/*",
         "use.refresh.tokens": "true",
-        "client.use.lightweight.access.token.enabled": "false",
-        "dpop.bound.access.tokens": "true"
+        "client.use.lightweight.access.token.enabled": "false"
       },
       "defaultClientScopes": [
         "web-origins",
@@ -851,9 +850,9 @@
       ]
     },
     {
-      "clientId": "tpp-demo-public",
-      "name": "TPP Demo (Public + PKCE)",
-      "description": "Cliente p\u00fablico para probar Authorization Code con PKCE (S256).",
+      "clientId": "bci-demo-public",
+      "name": "BCI Demo (Public + PKCE)",
+      "description": "Cliente público para probar Authorization Code con PKCE (S256).",
       "enabled": true,
       "protocol": "openid-connect",
       "publicClient": true,
@@ -880,8 +879,7 @@
         "pkce.code.challenge.method": "S256",
         "oauth2.device.authorization.grant.enabled": "false",
         "oidc.ciba.grant.enabled": "false",
-        "post.logout.redirect.uris": "http://localhost:3001/*##http://127.0.0.1:3001/*",
-        "dpop.bound.access.tokens": "true"
+        "post.logout.redirect.uris": "http://localhost:3001/*##http://127.0.0.1:3001/*"
       },
       "defaultClientScopes": [
         "web-origins",
@@ -902,9 +900,9 @@
       ]
     },
     {
-      "clientId": "tpp-demo-mtls",
-      "name": "TPP Demo (mTLS / X509)",
-      "description": "Cliente preparado para autenticaci\u00f3n tls_client_auth v\u00eda certificado X509.",
+      "clientId": "bci-demo-mtls",
+      "name": "BCI Demo (mTLS / X509)",
+      "description": "Cliente preparado para autenticación tls_client_auth vía certificado X509.",
       "enabled": true,
       "protocol": "openid-connect",
       "publicClient": false,
@@ -927,9 +925,8 @@
         "pkce.code.challenge.method": "S256",
         "tls.client.certificate.bound.access.tokens": "true",
         "x509.allow.regex.pattern.comparison": "false",
-        "subjectdn": "CN=tpp-demo,O=SFA POC,C=CL",
-        "post.logout.redirect.uris": "http://localhost:3000/*",
-        "dpop.bound.access.tokens": "true"
+        "subjectdn": "CN=bci-demo,O=BCI IDP,C=CL",
+        "post.logout.redirect.uris": "http://localhost:3000/*"
       },
       "defaultClientScopes": [
         "web-origins",
@@ -950,14 +947,14 @@
       ]
     },
     {
-      "clientId": "tpp-demo-m2m",
-      "name": "TPP Demo (Client Credentials + DPoP / M2M)",
-      "description": "Cliente confidential machine-to-machine. grant_type client_credentials con tokens DPoP-bound (header DPoP obligatorio en /token y en llamadas al API).",
+      "clientId": "bci-demo-m2m",
+      "name": "BCI Demo (Client Credentials / M2M)",
+      "description": "Cliente confidential machine-to-machine. grant_type client_credentials.",
       "enabled": true,
       "protocol": "openid-connect",
       "publicClient": false,
       "clientAuthenticatorType": "client-secret",
-      "secret": "tpp-demo-m2m-secret-local-dev",
+      "secret": "bci-demo-m2m-secret-local-dev",
       "redirectUris": [],
       "webOrigins": [],
       "standardFlowEnabled": false,
@@ -970,8 +967,7 @@
       "attributes": {
         "oauth2.device.authorization.grant.enabled": "false",
         "oidc.ciba.grant.enabled": "false",
-        "client.use.lightweight.access.token.enabled": "false",
-        "dpop.bound.access.tokens": "true"
+        "client.use.lightweight.access.token.enabled": "false"
       },
       "defaultClientScopes": [
         "web-origins",
@@ -988,17 +984,57 @@
         "accounts:write",
         "payments:read"
       ]
+    },
+    {
+      "clientId": "sfa-poc-broker",
+      "name": "SFA POC Broker",
+      "description": "Cliente OIDC para federación desde sfa-poc (Identity Broker)",
+      "enabled": true,
+      "protocol": "openid-connect",
+      "publicClient": false,
+      "clientAuthenticatorType": "client-secret",
+      "secret": "sfa-poc-broker-secret-local-dev",
+      "redirectUris": [
+        "http://localhost:8080/realms/sfa-poc/broker/bci-idp/endpoint"
+      ],
+      "webOrigins": [
+        "http://localhost:8080"
+      ],
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "serviceAccountsEnabled": false,
+      "authorizationServicesEnabled": false,
+      "fullScopeAllowed": false,
+      "consentRequired": false,
+      "attributes": {
+        "pkce.code.challenge.method": "S256"
+      },
+      "defaultClientScopes": [
+        "web-origins",
+        "acr",
+        "profile",
+        "roles",
+        "basic",
+        "email"
+      ],
+      "optionalClientScopes": [
+        "address",
+        "phone",
+        "offline_access",
+        "microprofile-jwt"
+      ]
     }
   ],
   "users": [
     {
-      "username": "service-account-tpp-demo-m2m",
+      "username": "service-account-bci-demo-m2m",
       "enabled": true,
       "emailVerified": false,
-      "serviceAccountClientId": "tpp-demo-m2m",
+      "serviceAccountClientId": "bci-demo-m2m",
       "realmRoles": [
         "account-viewer",
-        "tpp-operator"
+        "bci-operator"
       ],
       "clientRoles": {
         "resource-server": [
@@ -1012,7 +1048,7 @@
       "emailVerified": true,
       "firstName": "Demo",
       "lastName": "User",
-      "email": "demo-user@sfa-poc.local",
+      "email": "demo-user@bci-idp.local",
       "credentials": [
         {
           "type": "password",
@@ -1022,7 +1058,7 @@
       ],
       "realmRoles": [
         "account-viewer",
-        "tpp-operator"
+        "bci-operator"
       ],
       "clientRoles": {
         "resource-server": [
@@ -1030,7 +1066,7 @@
         ]
       },
       "groups": [
-        "/tpp-users"
+        "/bci-users"
       ],
       "attributes": {
         "customer_id": [
@@ -1047,7 +1083,7 @@
       "emailVerified": true,
       "firstName": "Admin",
       "lastName": "POC",
-      "email": "admin-poc@sfa-poc.local",
+      "email": "admin-poc@bci-idp.local",
       "credentials": [
         {
           "type": "password",
@@ -1058,7 +1094,7 @@
       "realmRoles": [
         "account-admin",
         "account-viewer",
-        "tpp-operator"
+        "bci-operator"
       ],
       "clientRoles": {
         "resource-server": [
@@ -1073,80 +1109,145 @@
           "es"
         ]
       }
-    }
-  ],
-  "identityProviders": [
+    },
     {
-      "alias": "bci-idp",
-      "displayName": "BCI IDP",
-      "providerId": "oidc",
+      "username": "maria-gonzalez",
       "enabled": true,
-      "updateProfileFirstLoginMode": "on",
-      "trustEmail": true,
-      "storeToken": false,
-      "addReadTokenRoleOnCreate": false,
-      "authenticateByDefault": false,
-      "linkOnly": false,
-      "firstBrokerLoginFlowAlias": "first broker login",
-      "config": {
-        "issuer": "http://127.0.0.1:5050/realms/bci-idp",
-        "authorizationUrl": "http://127.0.0.1:5050/realms/bci-idp/protocol/openid-connect/auth",
-        "tokenUrl": "http://127.0.0.1:5050/realms/bci-idp/protocol/openid-connect/token",
-        "userInfoUrl": "http://127.0.0.1:5050/realms/bci-idp/protocol/openid-connect/userinfo",
-        "jwksUrl": "http://127.0.0.1:5050/realms/bci-idp/protocol/openid-connect/certs",
-        "logoutUrl": "http://127.0.0.1:5050/realms/bci-idp/protocol/openid-connect/logout",
-        "clientId": "sfa-poc-broker",
-        "clientSecret": "sfa-poc-broker-secret-local-dev",
-        "defaultScope": "openid profile email",
-        "validateSignature": "true",
-        "useJwksUrl": "true",
-        "pkceEnabled": "true",
-        "pkceMethod": "S256",
-        "clientAuthMethod": "client_secret_post",
-        "syncMode": "IMPORT",
-        "guiOrder": "0"
-      }
-    }
-  ],
-  "identityProviderMappers": [
-    {
-      "name": "bci-idp-username-mapper",
-      "identityProviderAlias": "bci-idp",
-      "identityProviderMapper": "oidc-user-attribute-idp-mapper",
-      "config": {
-        "syncMode": "INHERIT",
-        "claim": "preferred_username",
-        "user.attribute": "username"
+      "emailVerified": true,
+      "firstName": "María",
+      "lastName": "González",
+      "email": "maria-gonzalez@bci-idp.local",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "maria-gonzalez-local-dev",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "account-viewer",
+        "bci-operator"
+      ],
+      "clientRoles": {
+        "resource-server": [
+          "api-reader"
+        ]
+      },
+      "groups": [
+        "/bci-users"
+      ],
+      "attributes": {
+        "customer_id": [
+          "CUST-002"
+        ],
+        "locale": [
+          "es"
+        ]
       }
     },
     {
-      "name": "bci-idp-email-mapper",
-      "identityProviderAlias": "bci-idp",
-      "identityProviderMapper": "oidc-user-attribute-idp-mapper",
-      "config": {
-        "syncMode": "INHERIT",
-        "claim": "email",
-        "user.attribute": "email"
+      "username": "juan-perez",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Juan",
+      "lastName": "Pérez",
+      "email": "juan-perez@bci-idp.local",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "juan-perez-local-dev",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "account-viewer",
+        "bci-operator"
+      ],
+      "clientRoles": {
+        "resource-server": [
+          "api-reader"
+        ]
+      },
+      "groups": [
+        "/bci-users"
+      ],
+      "attributes": {
+        "customer_id": [
+          "CUST-003"
+        ],
+        "locale": [
+          "es"
+        ]
       }
     },
     {
-      "name": "bci-idp-firstname-mapper",
-      "identityProviderAlias": "bci-idp",
-      "identityProviderMapper": "oidc-user-attribute-idp-mapper",
-      "config": {
-        "syncMode": "INHERIT",
-        "claim": "given_name",
-        "user.attribute": "firstName"
+      "username": "ana-rodriguez",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Ana",
+      "lastName": "Rodríguez",
+      "email": "ana-rodriguez@bci-idp.local",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "ana-rodriguez-local-dev",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "account-viewer",
+        "bci-operator"
+      ],
+      "clientRoles": {
+        "resource-server": [
+          "api-reader"
+        ]
+      },
+      "groups": [
+        "/bci-users"
+      ],
+      "attributes": {
+        "customer_id": [
+          "CUST-004"
+        ],
+        "locale": [
+          "es"
+        ]
       }
     },
     {
-      "name": "bci-idp-lastname-mapper",
-      "identityProviderAlias": "bci-idp",
-      "identityProviderMapper": "oidc-user-attribute-idp-mapper",
-      "config": {
-        "syncMode": "INHERIT",
-        "claim": "family_name",
-        "user.attribute": "lastName"
+      "username": "carlos-silva",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Carlos",
+      "lastName": "Silva",
+      "email": "carlos-silva@bci-idp.local",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "carlos-silva-local-dev",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "account-viewer",
+        "bci-operator"
+      ],
+      "clientRoles": {
+        "resource-server": [
+          "api-reader"
+        ]
+      },
+      "groups": [
+        "/bci-users"
+      ],
+      "attributes": {
+        "customer_id": [
+          "CUST-005"
+        ],
+        "locale": [
+          "es"
+        ]
       }
     }
   ],
@@ -1164,43 +1265,5 @@
     "parRequestUriLifespan": "60",
     "frontendUrl": "",
     "acr.loa.map": "{}"
-  },
-  "clientProfiles": {
-    "profiles": [
-      {
-        "name": "sfa-poc-dpop-profile",
-        "description": "Perfil DPoP del POC: tokens ligados a clave publica y flujo OIDC estricto con dpop_jkt",
-        "executors": [
-          {
-            "executor": "dpop-bind-enforcer",
-            "configuration": {
-              "auto-configure": "false",
-              "enforce-authorization-code-binding-to-dpop": "true",
-              "allow-only-refresh-token-binding": "false"
-            }
-          }
-        ]
-      }
-    ]
-  },
-  "clientPolicies": {
-    "policies": [
-      {
-        "name": "sfa-poc-dpop-policy",
-        "description": "Aplica DPoP estricto a clientes TPP con dpop.bound.access.tokens habilitado",
-        "enabled": true,
-        "conditions": [
-          {
-            "condition": "client-attributes",
-            "configuration": {
-              "attributes": "[{\"key\":\"dpop.bound.access.tokens\",\"value\":\"true\"}]"
-            }
-          }
-        ],
-        "profiles": [
-          "sfa-poc-dpop-profile"
-        ]
-      }
-    ]
   }
 }

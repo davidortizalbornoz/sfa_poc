@@ -1,0 +1,74 @@
+# BCI Identity Provider — Keycloak + PostgreSQL
+# Ejecutar en paralelo con sfa-poc (docker-compose.yml)
+# Etiqueta del proyecto: bci-idp
+
+name: bci-idp
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: bci-postgres
+    labels:
+      - "project=bci-idp"
+    environment:
+      POSTGRES_DB: ${BCI_POSTGRES_DB}
+      POSTGRES_USER: ${BCI_POSTGRES_USER}
+      POSTGRES_PASSWORD: ${BCI_POSTGRES_PASSWORD}
+    volumes:
+      - bci_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${BCI_POSTGRES_USER} -d ${BCI_POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+    restart: unless-stopped
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.2.5
+    container_name: bci-keycloak
+    labels:
+      - "project=bci-idp"
+    command: start-dev --import-realm
+    environment:
+      KC_BOOTSTRAP_ADMIN_USERNAME: ${BCI_KC_BOOTSTRAP_ADMIN_USERNAME}
+      KC_BOOTSTRAP_ADMIN_PASSWORD: ${BCI_KC_BOOTSTRAP_ADMIN_PASSWORD}
+
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://postgres:5432/${BCI_POSTGRES_DB}
+      KC_DB_USERNAME: ${BCI_POSTGRES_USER}
+      KC_DB_PASSWORD: ${BCI_POSTGRES_PASSWORD}
+
+      KC_HOSTNAME: ${BCI_KC_HOSTNAME}
+      KC_HOSTNAME_STRICT: "false"
+      KC_HOSTNAME_BACKCHANNEL_DYNAMIC: "true"
+
+      KC_HTTP_ENABLED: "true"
+
+      KC_HEALTH_ENABLED: "true"
+      KC_METRICS_ENABLED: "true"
+
+      KC_LOG_LEVEL: info
+
+    ports:
+      - "5050:8080"
+      - "9050:9000"
+    volumes:
+      - ./keycloak/import/bci-idp-realm.json:/opt/keycloak/data/import/bci-idp-realm.json
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "exec 3<>/dev/tcp/127.0.0.1/9000 && echo -e 'GET /health/ready HTTP/1.1\\r\\nHost: localhost\\r\\nConnection: close\\r\\n\\r\\n' >&3 && cat <&3 | grep -q '\"status\": \"UP\"'"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 90s
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+    restart: unless-stopped
+
+volumes:
+  bci_postgres_data:
