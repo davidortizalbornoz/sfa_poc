@@ -213,13 +213,27 @@ Causas frecuentes: poca memoria en Docker o PostgreSQL no disponible. Sube RAM e
 - **sfa-poc:** http://sfa.localtest.me:8080/admin — confirma `KC_HOSTNAME=http://sfa.localtest.me:8080` en `.env`
 - **bci-idp (remoto):** http://10.67.245.106:5050/admin — confirma `BCI_KC_HOSTNAME=http://10.67.245.106:5050` en `.env`
 
-### Account console: 403 en `userProfileMetadata`
+### Account console: 401/403 en `userProfileMetadata`
 
-Keycloak **26.2.x** no asigna scopes a los clientes built-in (`account-console`, etc.) cuando el JSON de import define `clientScopes` custom ([issue #10021](https://github.com/keycloak/keycloak/issues/10021)). Sin el scope **`roles`**, la Account console responde 403.
+Tras el login (local o federado vía BCI IDP), la Account console llama a `GET /realms/sfa-poc/account/?userProfileMetadata=true`. Keycloak exige que el usuario tenga el rol **`manage-account`** o **`view-profile`** del cliente `account` (`AccountRestService.account()`). Sin ellos, la UI muestra error genérico y el navegador reporta **401 Unauthorized** (en algunas versiones 403).
 
-**Solución en `sfa-poc-realm.json`:** incluir los seis clientes built-in del realm (`account`, `account-console`, `admin-cli`, `broker`, `realm-management`, `security-admin-console`) con sus `defaultClientScopes` (`web-origins`, `acr`, `profile`, `roles`, `basic`, `email`). No basta con declarar solo `account-console` (provoca duplicate key al importar) ni confiar solo en `defaultDefaultClientScopes` del realm.
+**Causa en import con `clientScopes` custom:** Keycloak no crea los roles built-in del cliente `account` ni compone `default-roles-<realm>` con `manage-account` / `view-profile` ([#10021](https://github.com/keycloak/keycloak/issues/10021), [#31033](https://github.com/keycloak/keycloak/issues/31033)).
 
-Si el realm se creó antes de esta corrección, reimporta con `docker compose down -v && docker compose up -d`.
+**Solución en `sfa-poc-realm.json`:**
+1. Clientes built-in (`account`, `account-console`, etc.) con `defaultClientScopes` incluyendo **`roles`**.
+2. Roles del cliente **`account`** completos (`manage-account`, `view-profile`, …) en `roles.client.account`.
+3. Rol **`default-roles-sfa-poc`** con composites: `manage-account`, `view-profile`, `offline_access`, `uma_authorization`.
+
+La federación con `ana-rodriguez` **no es la causa**: los roles definidos en `bci-idp-realm.json` (`account-viewer`, `bci-operator`, etc.) aplican solo en el realm **bci-idp**. La Account console corre en **sfa-poc** y valida el token emitido por el cliente `account-console` de sfa-poc.
+
+El **401** lo provoca el cliente `account-console` con `fullScopeAllowed: false`: el access token no incluye `aud: account` ni `resource_access.account`, y la API `/account/?userProfileMetadata=true` lo rechaza (requiere Bearer con audience `account`).
+
+**Solución en `sfa-poc-realm.json` (cliente `account-console`):**
+- `fullScopeAllowed: true`
+- `client.use.lightweight.access.token.enabled: false`
+- Clientes built-in + roles del cliente `account` + composite `default-roles-sfa-poc` (ver puntos anteriores)
+
+Si el realm se creó antes de esta corrección: `docker compose down -v && docker compose up -d`.
 
 ### Puerto 8080 ocupado
 
