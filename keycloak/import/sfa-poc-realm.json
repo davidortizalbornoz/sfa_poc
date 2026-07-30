@@ -68,7 +68,7 @@
     "xFrameOptions": "SAMEORIGIN",
     "contentSecurityPolicy": "frame-src 'self'; frame-ancestors 'self'; object-src 'none';",
     "xXSSProtection": "1; mode=block",
-    "strictTransportSecurity": "max-age=31536000; includeSubDomains"
+    "strictTransportSecurity": ""
   },
   "roles": {
     "realm": [
@@ -988,6 +988,41 @@
         "accounts:write",
         "payments:read"
       ]
+    },
+    {
+      "clientId": "account-console",
+      "name": "${client_account-console}",
+      "description": "Account Management console (built-in)",
+      "enabled": true,
+      "protocol": "openid-connect",
+      "publicClient": true,
+      "redirectUris": [
+        "/realms/sfa-poc/account/*"
+      ],
+      "webOrigins": [],
+      "rootUrl": "${authBaseUrl}",
+      "baseUrl": "/realms/sfa-poc/account/",
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "serviceAccountsEnabled": false,
+      "authorizationServicesEnabled": false,
+      "fullScopeAllowed": false,
+      "consentRequired": false,
+      "attributes": {
+        "realm_client": "false",
+        "post.logout.redirect.uris": "+",
+        "pkce.code.challenge.method": "S256"
+      },
+      "defaultClientScopes": [
+        "web-origins",
+        "acr",
+        "profile",
+        "roles",
+        "basic",
+        "email"
+      ],
+      "optionalClientScopes": []
     }
   ],
   "users": [

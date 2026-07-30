@@ -47,6 +47,10 @@ docker compose down -v
 - **Identity Provider:** `bci-idp` (OIDC → `http://10.67.245.106:5050/realms/bci-idp`)
 
 > Para flujos con **BCI IDP** (Account console, broker), usa **`http://sfa.localtest.me:8080`** en lugar de `localhost`. Keycloak 26 en `localhost` emite cookies `SameSite=None; Secure` que no sobreviven el redirect al IdP remoto (*Restart login cookie not found*). `sfa.localtest.me` resuelve a 127.0.0.1 vía DNS público.
+>
+> **Si la URL no carga en el navegador:**
+> 1. Limpia HSTS cacheado: Chrome → `chrome://net-internals/#hsts` → Delete domain `sfa.localtest.me` (Keycloak enviaba HSTS antes y el navegador puede forzar HTTPS).
+> 2. Si DNS falla (red corporativa), agrega a `/etc/hosts`: `127.0.0.1 sfa.localtest.me`
 
 ## Entorno bci-idp (remoto)
 

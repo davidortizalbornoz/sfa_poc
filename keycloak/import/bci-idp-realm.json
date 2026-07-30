@@ -68,7 +68,7 @@
     "xFrameOptions": "SAMEORIGIN",
     "contentSecurityPolicy": "frame-src 'self'; frame-ancestors 'self'; object-src 'none';",
     "xXSSProtection": "1; mode=block",
-    "strictTransportSecurity": "max-age=31536000; includeSubDomains"
+    "strictTransportSecurity": ""
   },
   "roles": {
     "realm": [
@@ -1010,6 +1010,8 @@
       "fullScopeAllowed": false,
       "consentRequired": false,
       "attributes": {
+        "realm_client": "false",
+        "post.logout.redirect.uris": "+",
         "pkce.code.challenge.method": "S256"
       },
       "defaultClientScopes": [

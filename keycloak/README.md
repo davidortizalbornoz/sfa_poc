@@ -33,7 +33,7 @@ POSTGRES_PASSWORD=keycloak_local_dev
 KC_BOOTSTRAP_ADMIN_USERNAME=admin
 KC_BOOTSTRAP_ADMIN_PASSWORD=admin_local_dev
 
-KC_HOSTNAME=http://localhost:8080
+KC_HOSTNAME=http://sfa.localtest.me:8080
 ```
 
 > Si no existe `.env`, créalo copiando los valores anteriores o desde un respaldo local del equipo.
@@ -82,14 +82,14 @@ Respuesta esperada: `"status": "UP"`.
 
 | Campo | Valor |
 |---|---|
-| URL | http://localhost:8080/admin |
+| URL | http://sfa.localtest.me:8080/admin |
 | Usuario | `admin` |
 | Password | `admin_local_dev` |
 
 ### OpenID Discovery (realm importado)
 
 ```bash
-curl -s http://localhost:8080/realms/sfa-poc/.well-known/openid-configuration | python3 -m json.tool
+curl -s http://sfa.localtest.me:8080/realms/sfa-poc/.well-known/openid-configuration | python3 -m json.tool
 ```
 
 ## Realm `sfa-poc` (import automático)
@@ -153,13 +153,13 @@ grant_type=client_credentials
 
 | Endpoint | URL |
 |---|---|
-| Landing | http://localhost:8080 |
-| Admin Console | http://localhost:8080/admin |
-| Discovery | http://localhost:8080/realms/sfa-poc/.well-known/openid-configuration |
-| Authorization | http://localhost:8080/realms/sfa-poc/protocol/openid-connect/auth |
-| Token | http://localhost:8080/realms/sfa-poc/protocol/openid-connect/token |
-| PAR | http://localhost:8080/realms/sfa-poc/protocol/openid-connect/ext/par/request |
-| JWKS | http://localhost:8080/realms/sfa-poc/protocol/openid-connect/certs |
+| Landing | http://sfa.localtest.me:8080 |
+| Admin Console | http://sfa.localtest.me:8080/admin |
+| Discovery | http://sfa.localtest.me:8080/realms/sfa-poc/.well-known/openid-configuration |
+| Authorization | http://sfa.localtest.me:8080/realms/sfa-poc/protocol/openid-connect/auth |
+| Token | http://sfa.localtest.me:8080/realms/sfa-poc/protocol/openid-connect/token |
+| PAR | http://sfa.localtest.me:8080/realms/sfa-poc/protocol/openid-connect/ext/par/request |
+| JWKS | http://sfa.localtest.me:8080/realms/sfa-poc/protocol/openid-connect/certs |
 
 ## Comandos habituales
 
@@ -179,26 +179,24 @@ docker compose logs -f keycloak
 
 ## Reimportar el realm
 
-Keycloak usa estrategia **`IGNORE_EXISTING`**: si el realm `sfa-poc` ya existe, **no sobrescribe** cambios del JSON.
+Keycloak usa estrategia **`IGNORE_EXISTING`**: si el realm ya existe, **no sobrescribe** cambios del JSON.
 
-Para aplicar modificaciones en `sfa-poc-realm.json`:
+Para aplicar modificaciones en `sfa-poc-realm.json` o `bci-idp-realm.json`:
 
 **Opción A — Borrar solo el realm**
 
-1. Entra a http://localhost:8080/admin
-2. Selecciona realm `sfa-poc` → **Realm settings** → **Action** → **Delete**
-3. Reinicia Keycloak:
+1. Entra a la consola admin del entorno correspondiente.
+2. Selecciona el realm → **Realm settings** → **Action** → **Delete**
+3. Reinicia Keycloak (el JSON se importa al arrancar).
 
-```bash
-docker compose restart keycloak
-```
-
-**Opción B — Reset total**
+**Opción B — Reset total (recomendado en desarrollo)**
 
 ```bash
 docker compose down -v
 docker compose up -d
 ```
+
+Para bci-idp remoto, borra el realm desde http://10.67.245.106:5050/admin y reinicia el contenedor, o recrea el volumen en ese host.
 
 ## Solución de problemas
 
@@ -212,21 +210,16 @@ Causas frecuentes: poca memoria en Docker o PostgreSQL no disponible. Sube RAM e
 
 ### Admin Console con errores de redirect
 
-- Accede siempre por http://localhost:8080/admin
-- Confirma `KC_HOSTNAME=http://localhost:8080` en `.env`
+- **sfa-poc:** http://sfa.localtest.me:8080/admin — confirma `KC_HOSTNAME=http://sfa.localtest.me:8080` en `.env`
+- **bci-idp (remoto):** http://10.67.245.106:5050/admin — confirma `BCI_KC_HOSTNAME=http://10.67.245.106:5050` en `.env`
 
-### Convivencia con bci-idp (sesiones que se pierden)
+### Account console: 403 en `userProfileMetadata`
 
-Si **sfa-poc** y **bci-idp** están activos a la vez, no uses `localhost` para ambos: el navegador comparte cookies de sesión entre puertos del mismo dominio.
-
-- **sfa-poc:** `http://localhost:8080`
-- **bci-idp:** `http://127.0.0.1:5050` (ver [README.md](../README.md#convivencia-de-sesiones))
-
-Acceder a bci-idp vía `localhost:5050` invalidará la sesión de sfa-poc y viceversa.
+El cliente `account-console` debe incluir el client scope **`roles`** (definido en `sfa-poc-realm.json`). Si el realm se creó antes de esa entrada, reimporta el realm (ver sección anterior).
 
 ### Puerto 8080 ocupado
 
-Cambia el mapeo en `docker-compose.yml` (ej. `"8081:8080"`) y actualiza `KC_HOSTNAME=http://localhost:8081`.
+Cambia el mapeo en `docker-compose.yml` (ej. `"8081:8080"`) y actualiza `KC_HOSTNAME` con el mismo hostname y puerto.
 
 ## Notas de seguridad
 
