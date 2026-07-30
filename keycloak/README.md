@@ -215,7 +215,11 @@ Causas frecuentes: poca memoria en Docker o PostgreSQL no disponible. Sube RAM e
 
 ### Account console: 403 en `userProfileMetadata`
 
-El cliente `account-console` debe incluir el client scope **`roles`** (definido en `sfa-poc-realm.json`). Si el realm se creó antes de esa entrada, reimporta el realm (ver sección anterior).
+Keycloak **26.2.x** no asigna scopes a los clientes built-in (`account-console`, etc.) cuando el JSON de import define `clientScopes` custom ([issue #10021](https://github.com/keycloak/keycloak/issues/10021)). Sin el scope **`roles`**, la Account console responde 403.
+
+**Solución en `sfa-poc-realm.json`:** incluir los seis clientes built-in del realm (`account`, `account-console`, `admin-cli`, `broker`, `realm-management`, `security-admin-console`) con sus `defaultClientScopes` (`web-origins`, `acr`, `profile`, `roles`, `basic`, `email`). No basta con declarar solo `account-console` (provoca duplicate key al importar) ni confiar solo en `defaultDefaultClientScopes` del realm.
+
+Si el realm se creó antes de esta corrección, reimporta con `docker compose down -v && docker compose up -d`.
 
 ### Puerto 8080 ocupado
 
