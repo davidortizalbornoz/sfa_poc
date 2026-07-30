@@ -995,9 +995,11 @@
       "clientAuthenticatorType": "client-secret",
       "secret": "sfa-poc-broker-secret-local-dev",
       "redirectUris": [
+        "http://sfa.localtest.me:8080/realms/sfa-poc/broker/bci-idp/endpoint",
         "http://localhost:8080/realms/sfa-poc/broker/bci-idp/endpoint"
       ],
       "webOrigins": [
+        "http://sfa.localtest.me:8080",
         "http://localhost:8080"
       ],
       "standardFlowEnabled": true,
