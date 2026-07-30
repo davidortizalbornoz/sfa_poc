@@ -20,6 +20,16 @@ export interface AppConfig {
   endpoints: OidcEndpoints;
 }
 
+export interface M2mConfig {
+  baseUrl: string;
+  realm: string;
+  clientId: string;
+  clientSecret: string;
+  scope: string;
+  resourceServerUrl: string;
+  tokenEndpoint: string;
+}
+
 export interface DpopPublicJwk {
   kty: string;
   crv: string;

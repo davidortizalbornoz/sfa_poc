@@ -100,12 +100,41 @@ El archivo `keycloak/import/sfa-poc-realm.json` se importa al iniciar Keycloak (
 
 | Client ID | Tipo | Uso |
 |---|---|---|
-| `tpp-demo` | Confidential | Cliente principal del POC (PAR + PKCE) |
+| `tpp-demo` | Confidential | Cliente principal del POC (PAR + PKCE + DPoP) |
 | `tpp-demo-public` | Public | Authorization Code con PKCE sin secret |
 | `tpp-demo-mtls` | X509 | Preparado para `tls_client_auth` |
+| `tpp-demo-m2m` | Confidential + Service Account | `client_credentials` + DPoP (M2M, sin usuario) |
 | `resource-server` | Bearer-only | Audience lógica del API protegido |
 
 **Secret de `tpp-demo`:** `tpp-demo-secret-local-dev`
+
+**Secret de `tpp-demo-m2m`:** `tpp-demo-m2m-secret-local-dev`
+
+### Obtener token con `client_credentials` + DPoP (`tpp-demo-m2m`)
+
+Con `dpop.bound.access.tokens=true`, Keycloak **rechaza** el token request si no incluye un header `DPoP` válido (JWT ES256 con `htm`, `htu` y `jwk`). La respuesta exitosa devuelve `token_type: DPoP` y un `access_token` con claim `cnf.jkt`.
+
+Flujo:
+
+1. Generar par de claves **ES256 (P-256)** en el cliente (misma lógica que `tpp-client/src/dpop.ts`).
+2. Crear **DPoP proof** para `POST` al token endpoint (sin claim `ath`).
+3. Enviar el token request con header `DPoP`.
+4. Llamar al API con `Authorization: DPoP <access_token>` y un **nuevo** DPoP proof (con claim `ath`).
+
+Ejemplo conceptual del token request (el proof debe generarse en código; no es práctico con curl plano):
+
+```http
+POST /realms/sfa-poc/protocol/openid-connect/token
+Content-Type: application/x-www-form-urlencoded
+DPoP: eyJ0eXAiOiJkcG9wK2p3dCIs...
+
+grant_type=client_credentials
+&client_id=tpp-demo-m2m
+&client_secret=tpp-demo-m2m-secret-local-dev
+&scope=accounts:read
+```
+
+> `tpp-demo` **no** soporta `client_credentials` (`serviceAccountsEnabled=false`). Usa `tpp-demo-m2m` para flujos machine-to-machine con DPoP.
 
 ### Usuarios de prueba
 

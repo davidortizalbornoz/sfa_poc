@@ -948,9 +948,64 @@
         "accounts:write",
         "payments:read"
       ]
+    },
+    {
+      "clientId": "tpp-demo-m2m",
+      "name": "TPP Demo (Client Credentials + DPoP / M2M)",
+      "description": "Cliente confidential machine-to-machine. grant_type client_credentials con tokens DPoP-bound (header DPoP obligatorio en /token y en llamadas al API).",
+      "enabled": true,
+      "protocol": "openid-connect",
+      "publicClient": false,
+      "clientAuthenticatorType": "client-secret",
+      "secret": "tpp-demo-m2m-secret-local-dev",
+      "redirectUris": [],
+      "webOrigins": [],
+      "standardFlowEnabled": false,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "serviceAccountsEnabled": true,
+      "authorizationServicesEnabled": false,
+      "fullScopeAllowed": false,
+      "consentRequired": false,
+      "attributes": {
+        "oauth2.device.authorization.grant.enabled": "false",
+        "oidc.ciba.grant.enabled": "false",
+        "client.use.lightweight.access.token.enabled": "false",
+        "dpop.bound.access.tokens": "true"
+      },
+      "defaultClientScopes": [
+        "web-origins",
+        "acr",
+        "roles",
+        "basic"
+      ],
+      "optionalClientScopes": [
+        "address",
+        "phone",
+        "offline_access",
+        "microprofile-jwt",
+        "accounts:read",
+        "accounts:write",
+        "payments:read"
+      ]
     }
   ],
   "users": [
+    {
+      "username": "service-account-tpp-demo-m2m",
+      "enabled": true,
+      "emailVerified": false,
+      "serviceAccountClientId": "tpp-demo-m2m",
+      "realmRoles": [
+        "account-viewer",
+        "tpp-operator"
+      ],
+      "clientRoles": {
+        "resource-server": [
+          "api-reader"
+        ]
+      }
+    },
     {
       "username": "demo-user",
       "enabled": true,

@@ -11,6 +11,7 @@
     "build": "tsc",
     "start": "node --env-file=.env --import tsx src/index.ts",
     "auth": "node --env-file=.env --import tsx src/index.ts",
+    "m2m": "node --env-file=.env --import tsx src/m2m-token.ts",
     "start:prod": "node --env-file=.env dist/index.js"
   },
   "devDependencies": {

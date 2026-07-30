@@ -1,4 +1,4 @@
-import type { AppConfig } from "./types.js";
+import type { AppConfig, M2mConfig } from "./types.js";
 
 function required(name: string): string {
   const value = process.env[name];
@@ -28,5 +28,21 @@ export function loadConfig(): AppConfig {
       token: `${baseUrl}/realms/${realm}/protocol/openid-connect/token`,
       discovery: `${baseUrl}/realms/${realm}/.well-known/openid-configuration`,
     },
+  };
+}
+
+export function loadM2mConfig(): M2mConfig {
+  const baseUrl = required("KEYCLOAK_BASE_URL").replace(/\/$/, "");
+  const realm = required("KEYCLOAK_REALM");
+
+  return {
+    baseUrl,
+    realm,
+    clientId: process.env.M2M_CLIENT_ID ?? "tpp-demo-m2m",
+    clientSecret:
+      process.env.M2M_CLIENT_SECRET ?? "tpp-demo-m2m-secret-local-dev",
+    scope: process.env.M2M_SCOPE ?? "accounts:read",
+    resourceServerUrl: process.env.RESOURCE_SERVER_URL ?? "",
+    tokenEndpoint: `${baseUrl}/realms/${realm}/protocol/openid-connect/token`,
   };
 }

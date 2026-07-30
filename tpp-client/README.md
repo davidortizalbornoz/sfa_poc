@@ -52,6 +52,9 @@ Variables por defecto (`.env`):
 | `CALLBACK_HOST` | `localhost` | Host del servidor callback |
 | `CALLBACK_PORT` | `3000` | Puerto del servidor callback |
 | `RESOURCE_SERVER_URL` | *(vacío)* | URL opcional del API protegido (ej. `http://localhost:9090/cities`) |
+| `M2M_CLIENT_ID` | `tpp-demo-m2m` | Cliente M2M (`npm run m2m`) |
+| `M2M_CLIENT_SECRET` | `tpp-demo-m2m-secret-local-dev` | Secret del cliente M2M |
+| `M2M_SCOPE` | `accounts:read` | Scope para `client_credentials` |
 
 > Keycloak exige DPoP para el cliente `tpp-demo` (`dpop.bound.access.tokens=true`). El script genera claves ES256 en memoria en cada ejecución.
 
@@ -71,6 +74,23 @@ Alias equivalente:
 ```bash
 npm run auth
 ```
+
+### Flujo M2M (`client_credentials` + DPoP)
+
+Para el cliente `tpp-demo-m2m` (sin navegador ni usuario):
+
+```bash
+npm run m2m
+```
+
+El script:
+
+1. Genera claves **DPoP (ES256)** y el proof para `POST /token`.
+2. Imprime el **curl** listo para copiar.
+3. Obtiene el **access_token** con `grant_type=client_credentials`.
+4. Imprime el **curl** para llamar al Resource Server con `Authorization: DPoP`.
+
+Variables M2M opcionales en `.env`: `M2M_CLIENT_ID`, `M2M_CLIENT_SECRET`, `M2M_SCOPE`.
 
 ### Qué ocurre al ejecutar
 
@@ -141,6 +161,7 @@ tpp-client/
     ├── config.ts     # Carga de variables y URLs OIDC
     ├── dpop.ts       # Claves ES256, dpop_jkt y proofs DPoP
     ├── pkce.ts       # Generación PKCE + state
+    ├── m2m-token.ts  # client_credentials + DPoP (tpp-demo-m2m)
     └── index.ts      # Flujo PAR → browser → token → API (opcional)
 ```
 
