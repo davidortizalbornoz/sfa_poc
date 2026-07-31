@@ -27,8 +27,8 @@ Variables (`.env`):
 | Variable | Valor | Descripción |
 |---|---|---|
 | `PORT` | `9090` | Puerto HTTP del API |
-| `KEYCLOAK_ISSUER` | `http://localhost:8080/realms/sfa-poc` | Emisor del JWT |
-| `KEYCLOAK_JWKS_URI` | `.../protocol/openid-connect/certs` | Claves públicas JWKS |
+| `KEYCLOAK_ISSUER` | `http://sfa.localtest.me:8080/realms/sfa-poc` | Emisor del JWT (debe coincidir exactamente con `iss` del token) |
+| `KEYCLOAK_JWKS_URI` | `http://sfa.localtest.me:8080/.../certs` | Claves públicas JWKS |
 | `KEYCLOAK_AUDIENCE` | `resource-server` | Audience esperada en el token |
 | `REQUIRED_SCOPE` | `accounts:read` | Scope obligatorio |
 
@@ -71,7 +71,7 @@ Requiere:
 
 - `Authorization: DPoP <access_token>` (no Bearer)
 - Header `DPoP: <proof>` firmado con la misma clave usada en el flujo OAuth
-- Issuer: `http://localhost:8080/realms/sfa-poc`
+- Issuer: `http://sfa.localtest.me:8080/realms/sfa-poc`
 - Audience: `resource-server`
 - Scope: `accounts:read`
 - Claim `cnf.jkt` en el JWT igual al thumbprint de la clave del proof

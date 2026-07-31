@@ -276,9 +276,17 @@ Resultado: **access_token JWT** usable contra un Resource Server.
 cliente OAuth funcional que complete el flujo PAR → login → code PKCE (S256) → token, para validar que tu Authorization Server está bien configurado
 
 
-# Flujo Authorization Code [PAR + LOGIN (Web) + (PKCE (S256) + [Proof + TOKEN]) + Verificación DPoP en ResourceServer]
-# Flujo Client Credentials [Proof + TOKEN + Verificación DPoP en ResourceServer]
+# Instalación Authorization Server (Keycloak 26.2.5 (con setup FAPI 2.0 & DPoP Token))
+# Instalación Authorization Server (Keycloak 26.2.5 (con setup básico de un Identity Provider))
+
+# Flujo Client Credentials [Proof + TOKEN] -> Autenticación de Fintechs del directorio de participantes
+# Verificación DPoP en ResourceServer -> Para Fintech del directorio de participantes & clientes de filiales federados
+
+# Incorporación de un Identity Provider al Authorization Server para establecer Federación
+# Flujo Authorization Code [PAR + LOGIN (Web) + (PKCE (S256) + [Proof + TOKEN])] -> Autenticación de usuarios federados
+# Flujo de importación de usuarios federados al Authorization Server
 # Flujo DCR (Dynamic Client Registration) con SSA (Software Statement Assertion)
+
 
 Servicio	
 PostgreSQL 16
