@@ -1507,7 +1507,140 @@
       }
     }
   ],
-  "components": {},
+  "components": {
+    "org.keycloak.services.clientregistration.policy.ClientRegistrationPolicy": [
+      {
+        "id": "a1b2c3d4-e001-4000-8000-000000000001",
+        "name": "Allowed Client Scopes",
+        "providerId": "allowed-client-templates",
+        "subType": "authenticated",
+        "subComponents": {},
+        "config": {
+          "allow-default-scopes": [
+            "true"
+          ]
+        }
+      },
+      {
+        "id": "a1b2c3d4-e001-4000-8000-000000000002",
+        "name": "Allowed Protocol Mapper Types",
+        "providerId": "allowed-protocol-mappers",
+        "subType": "authenticated",
+        "subComponents": {},
+        "config": {
+          "allowed-protocol-mapper-types": [
+            "oidc-sha256-pairwise-sub-mapper",
+            "oidc-usermodel-property-mapper",
+            "saml-user-attribute-mapper",
+            "saml-user-property-mapper",
+            "oidc-full-name-mapper",
+            "oidc-address-mapper",
+            "saml-role-list-mapper",
+            "oidc-usermodel-attribute-mapper"
+          ]
+        }
+      },
+      {
+        "id": "a1b2c3d4-e001-4000-8000-000000000009",
+        "name": "SFA Software Statement",
+        "providerId": "sfa-software-statement",
+        "subType": "anonymous",
+        "subComponents": {},
+        "config": {
+          "directory-jwks-uri": [
+            "file:/opt/keycloak/data/test-directory-jwks.json"
+          ],
+          "directory-issuer": [
+            "https://directorio-qa.finanzasabiertas.cl"
+          ],
+          "max-statement-age-seconds": [
+            "300"
+          ],
+          "signature-algorithm": [
+            "PS256"
+          ]
+        }
+      },
+      {
+        "id": "a1b2c3d4-e001-4000-8000-000000000003",
+        "name": "Trusted Hosts",
+        "providerId": "trusted-hosts",
+        "subType": "anonymous",
+        "subComponents": {},
+        "config": {
+          "host-sending-registration-request-must-match": [
+            "false"
+          ],
+          "client-uris-must-match": [
+            "true"
+          ],
+          "trusted-hosts": [
+            "localhost",
+            "127.0.0.1",
+            "sfa.localtest.me",
+            "tpp-demo.localtest.me",
+            "*.localtest.me"
+          ]
+        }
+      },
+      {
+        "id": "a1b2c3d4-e001-4000-8000-000000000004",
+        "name": "Allowed Protocol Mapper Types",
+        "providerId": "allowed-protocol-mappers",
+        "subType": "anonymous",
+        "subComponents": {},
+        "config": {
+          "allowed-protocol-mapper-types": [
+            "oidc-sha256-pairwise-sub-mapper",
+            "oidc-usermodel-property-mapper",
+            "oidc-usermodel-attribute-mapper",
+            "oidc-full-name-mapper",
+            "oidc-address-mapper"
+          ]
+        }
+      },
+      {
+        "id": "a1b2c3d4-e001-4000-8000-000000000005",
+        "name": "Full Scope Disabled",
+        "providerId": "scope",
+        "subType": "anonymous",
+        "subComponents": {},
+        "config": {}
+      },
+      {
+        "id": "a1b2c3d4-e001-4000-8000-000000000006",
+        "name": "Allowed Client Scopes",
+        "providerId": "allowed-client-templates",
+        "subType": "anonymous",
+        "subComponents": {},
+        "config": {
+          "allow-default-scopes": [
+            "true"
+          ]
+        }
+      },
+      {
+        "id": "a1b2c3d4-e001-4000-8000-000000000007",
+        "name": "Consent Required",
+        "providerId": "consent-required",
+        "subType": "anonymous",
+        "subComponents": {},
+        "config": {}
+      },
+      {
+        "id": "a1b2c3d4-e001-4000-8000-000000000008",
+        "name": "Max Clients Limit",
+        "providerId": "max-clients",
+        "subType": "anonymous",
+        "subComponents": {},
+        "config": {
+          "max-clients": [
+            "200"
+          ]
+        }
+      }
+    ]
+  },
   "authenticationFlows": [],
   "authenticatorConfig": [],
   "requiredActions": [],

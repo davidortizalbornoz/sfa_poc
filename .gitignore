@@ -1,3 +1,4 @@
 node_modules/
 tpp-client/.env
 resource_server/.env
+clientRegistrationPolicy/target/

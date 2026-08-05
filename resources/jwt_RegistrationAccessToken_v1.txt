@@ -1,0 +1,17 @@
+eyJhbGciOiJIUzUxMiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICI0ZTg4NmM0OS05OTQwLTQzNWUtODg2Mi0yYjc0YmE1ZGRlMjQifQ.eyJleHAiOjAsImlhdCI6MTc4NTM2OTc4OCwianRpIjoiMTA4YjEyNTctZGNlYi00MjgyLTk4YmItMjhjN2NkZjNhZjUxIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL3JlYWxtcy9zZmEtcG9jIiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL3JlYWxtcy9zZmEtcG9jIiwidHlwIjoiUmVnaXN0cmF0aW9uQWNjZXNzVG9rZW4iLCJyZWdpc3RyYXRpb25fYXV0aCI6ImF1dGhlbnRpY2F0ZWQifQ.xEp1ycIR-IZ6TRzza8wFStYJB5VhjQtzCdHmPMmAur0Fo8MUr_RVR-K6MW4ofjQ9j290367JSLgc_g4XqOYqvA
+
+{
+  "alg": "HS512",
+  "typ": "JWT",
+  "kid": "4e886c49-9940-435e-8862-2b74ba5dde24"
+}
+
+{
+  "exp": 0,
+  "iat": 1785369788,
+  "jti": "108b1257-dceb-4282-98bb-28c7cdf3af51",
+  "iss": "http://localhost:8080/realms/sfa-poc",
+  "aud": "http://localhost:8080/realms/sfa-poc",
+  "typ": "RegistrationAccessToken",
+  "registration_auth": "authenticated"
+}

@@ -1,0 +1,20 @@
+eyJhbGciOiJQUzI1NiIsImtpZCI6InNmYS1wb2MtZGlyZWN0b3J5LTEiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2RpcmVjdG9yaW8tcWEuZmluYW56YXNhYmllcnRhcy5jbCIsImlhdCI6MTc4NTk2MTc0Nywic29mdHdhcmVfaWQiOiJTVy1UUFAtREVNTy0wMDEiLCJvcmdhbmlzYXRpb25faWQiOiJPUkctVFBQLTAwMSIsInNvZnR3YXJlX2p3a3NfdXJpIjoiaHR0cHM6Ly90cHAtZGVtby5sb2NhbHRlc3QubWUvLndlbGwta25vd24vandrcy5qc29uIiwic29mdHdhcmVfY2xpZW50X25hbWUiOiJUUFAgRGVtbyBTRkEgUE9DIiwicmVkaXJlY3RfdXJpcyI6WyJodHRwOi8vbG9jYWxob3N0OjMwMDAvY2FsbGJhY2siXSwic29mdHdhcmVfdmVyc2lvbiI6IjEuMC4wIn0.b-djUTjeD8WJLtVsHmKoOokDurbDUkGSRpaybhXxbYGxeZZOIeQ_pdSy_82ddAWYU7L7tgZUjzR-GjYfpay8zTjgL2vScciXv4m-l5hGgoPeNHMgFknW0c6r3Wh2vFOCwAYU5z2IF_UvGgPoMSLwL_JAzp5d7rrWEzLHGtxP58Kx7bQPUu_jSG8Hc4fONLw7cGJ-5ztGmHHq4qN-91645R5jM5QyiY5gjlZKXkNR10jGL7zAhOP3Nu7Aixov-nKpkglOXCcZFisu1x-nl2YByQphSjn9mpeHacQZPGJ5yxISBHrQmeVBvV39E3usysmvrgFRO5TB9D_Y9-9zqdvtvQ
+
+{
+  "alg": "PS256",
+  "kid": "sfa-poc-directory-1",
+  "typ": "JWT"
+}
+
+{
+  "iss": "https://directorio-qa.finanzasabiertas.cl",
+  "iat": 1785961747,
+  "software_id": "SW-TPP-DEMO-001",
+  "organisation_id": "ORG-TPP-001",
+  "software_jwks_uri": "https://tpp-demo.localtest.me/.well-known/jwks.json",
+  "software_client_name": "TPP Demo SFA POC",
+  "redirect_uris": [
+    "http://localhost:3000/callback"
+  ],
+  "software_version": "1.0.0"
+}

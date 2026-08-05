@@ -279,7 +279,7 @@ cliente OAuth funcional que complete el flujo PAR → login → code PKCE (S256)
 # Instalación Authorization Server (Keycloak 26.2.5 (con setup FAPI 2.0 & DPoP Token))
 # Instalación Authorization Server (Keycloak 26.2.5 (con setup básico de un Identity Provider))
 
-# Flujo Client Credentials [Proof + TOKEN] -> Autenticación de Fintechs del directorio de participantes
+# Flujo Client Credentials [Proof + TOKEN] -> Autenticación de Fintech's del directorio de participantes
 # Verificación DPoP en ResourceServer -> Para Fintech del directorio de participantes & clientes de filiales federados
 
 # Incorporación de un Identity Provider al Authorization Server para establecer Federación
