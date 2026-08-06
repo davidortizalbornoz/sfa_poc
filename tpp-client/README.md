@@ -161,7 +161,7 @@ tpp-client/
     ├── config.ts     # Carga de variables y URLs OIDC
     ├── dpop.ts       # Claves ES256, dpop_jkt y proofs DPoP
     ├── pkce.ts       # Generación PKCE + state
-    ├── m2m-token.ts  # client_credentials + DPoP (tpp-demo-m2m)
+    ├── m2m-token-clientSecret.ts  # client_credentials + DPoP (tpp-demo-m2m)
     └── index.ts      # Flujo PAR → browser → token → API (opcional)
 ```
 

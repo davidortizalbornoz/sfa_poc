@@ -24,10 +24,10 @@ def b64url(data: bytes) -> str:
 claims = {
     "iss": "https://directorio-qa.finanzasabiertas.cl",
     "iat": int(time.time()),
-    "software_id": "SW-TPP-DEMO-001",
-    "organisation_id": "ORG-TPP-001",
-    "software_jwks_uri": "https://tpp-demo.localtest.me/.well-known/jwks.json",
-    "software_client_name": "TPP Demo SFA POC",
+    "software_id": "FINTECH-A",
+    "organisation_id": "FINTECH-A INC",
+    "software_jwks_uri": "https://fintech-a.localtest.me/.well-known/jwks.json",
+    "software_client_name": "SFA POC - DCR + SSA",
     "redirect_uris": ["http://localhost:3000/callback"],
     "software_version": "1.0.0",
 }

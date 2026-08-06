@@ -15,10 +15,10 @@ export function loadConfig(): AppConfig {
   return {
     baseUrl,
     realm,
-    clientId: required("CLIENT_ID"),
-    clientSecret: required("CLIENT_SECRET"),
+    clientId: required("CLIENT_ID_IDP"),
+    clientSecret: required("CLIENT_SECRET_IDP"),
     redirectUri: required("REDIRECT_URI"),
-    scope: process.env.SCOPE ?? "openid profile email accounts:read",
+    scope: process.env.SCOPE_IDP ?? "openid profile email accounts:read",
     callbackHost: process.env.CALLBACK_HOST ?? "localhost",
     callbackPort: Number(process.env.CALLBACK_PORT ?? "3000"),
     resourceServerUrl: process.env.RESOURCE_SERVER_URL ?? "",

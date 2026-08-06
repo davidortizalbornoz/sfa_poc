@@ -2,16 +2,15 @@
   "name": "sfa-tpp-client",
   "version": "0.1.0",
   "private": true,
-  "description": "Cliente TPP de demostracion: Authorization Code + PAR + PKCE + DPoP contra Keycloak",
+  "description": "Cliente TPP de demostracion: [Authorization Code + PAR + PKCE + DPoP] + [Client Credential M2M ClientId+Secret]",
   "type": "module",
   "engines": {
     "node": ">=20"
   },
   "scripts": {
     "build": "tsc",
-    "start": "node --env-file=.env --import tsx src/index.ts",
-    "auth": "node --env-file=.env --import tsx src/index.ts",
-    "m2m": "node --env-file=.env --import tsx src/m2m-token.ts",
+    "auth-client-idp": "node --env-file=.env --import tsx src/index.ts",
+    "clientid-secret-m2m": "node --env-file=.env --import tsx src/m2m-token-clientSecret.ts",
     "start:prod": "node --env-file=.env dist/index.js"
   },
   "devDependencies": {
