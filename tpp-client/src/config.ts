@@ -1,4 +1,4 @@
-import type { AppConfig, M2mConfig } from "./types.js";
+import type { AppConfig, FintechAConfig, M2mConfig } from "./types.js";
 
 function required(name: string): string {
   const value = process.env[name];
@@ -43,6 +43,26 @@ export function loadM2mConfig(): M2mConfig {
       process.env.M2M_CLIENT_SECRET ?? "tpp-demo-m2m-secret-local-dev",
     scope: process.env.M2M_SCOPE ?? "accounts:read",
     resourceServerUrl: process.env.RESOURCE_SERVER_URL ?? "",
+    tokenEndpoint: `${baseUrl}/realms/${realm}/protocol/openid-connect/token`,
+  };
+}
+
+export function loadFintechAConfig(): FintechAConfig {
+  const baseUrl = required("KEYCLOAK_BASE_URL").replace(/\/$/, "");
+  const realm = required("KEYCLOAK_REALM");
+
+  return {
+    baseUrl,
+    realm,
+    clientId: required("FINTECH_A_CLIENT_ID"),
+    scope: process.env.FINTECH_A_SCOPE ?? "accounts:read",
+    kid: required("FINTECH_A_KID"),
+    privateKeyPath: required("FINTECH_A_PRIVATE_KEY_PATH"),
+    jwksPath: process.env.FINTECH_A_JWKS_PATH ?? "keys/fintech-a/jwks.json",
+    resourceServerUrl:
+      process.env.FINTECH_A_RESOURCE_SERVER_URL ??
+      process.env.RESOURCE_SERVER_URL ??
+      "http://localhost:9090/cities",
     tokenEndpoint: `${baseUrl}/realms/${realm}/protocol/openid-connect/token`,
   };
 }

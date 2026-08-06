@@ -30,6 +30,18 @@ export interface M2mConfig {
   tokenEndpoint: string;
 }
 
+export interface FintechAConfig {
+  baseUrl: string;
+  realm: string;
+  clientId: string;
+  scope: string;
+  kid: string;
+  privateKeyPath: string;
+  jwksPath: string;
+  resourceServerUrl: string;
+  tokenEndpoint: string;
+}
+
 export interface DpopPublicJwk {
   kty: string;
   crv: string;

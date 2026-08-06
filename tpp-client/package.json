@@ -11,6 +11,7 @@
     "build": "tsc",
     "auth-client-idp": "node --env-file=.env --import tsx src/index.ts",
     "clientid-secret-m2m": "node --env-file=.env --import tsx src/m2m-token-clientSecret.ts",
+    "fintech-a-m2m": "node --env-file=.env --import tsx src/m2m-token-privateKeyJwt.ts",
     "start:prod": "node --env-file=.env dist/index.js"
   },
   "devDependencies": {
