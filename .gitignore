@@ -2,3 +2,5 @@ node_modules/
 tpp-client/.env
 resource_server/.env
 clientRegistrationPolicy/target/
+clientRegistrationPolicy/ssa.env
+clientRegistrationPolicy/client-jwks/**/private.pem

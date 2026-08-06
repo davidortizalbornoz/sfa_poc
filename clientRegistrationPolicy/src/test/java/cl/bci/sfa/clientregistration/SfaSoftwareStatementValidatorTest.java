@@ -28,7 +28,7 @@ class SfaSoftwareStatementValidatorTest {
     DirectoryJwksResolver.clearCacheForTests();
 
     softwareStatement = TestSoftwareStatementFactory.createSampleStatement();
-    Path jwksPath = Path.of("test-keys/directory-jwks.json").toAbsolutePath();
+    Path jwksPath = Path.of("registro_participantes/directory-jwks.json").toAbsolutePath();
 
     config = new ComponentModel();
     config.getConfig().putSingle(

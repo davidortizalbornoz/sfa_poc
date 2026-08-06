@@ -35,7 +35,7 @@ final class TestSoftwareStatementFactory {
     String payloadPart = base64Url(JsonSerialization.writeValueAsBytes(claims));
     String signingInput = headerPart + "." + payloadPart;
 
-    PrivateKey privateKey = loadPrivateKey(Path.of("test-keys/directory-private.pem"));
+    PrivateKey privateKey = loadPrivateKey(Path.of("registro_participantes/directory-private.pem"));
     Signature signature = Signature.getInstance("RSASSA-PSS");
     signature.setParameter(new java.security.spec.PSSParameterSpec("SHA-256", "MGF1", java.security.spec.MGF1ParameterSpec.SHA256, 32, 1));
     signature.initSign(privateKey);

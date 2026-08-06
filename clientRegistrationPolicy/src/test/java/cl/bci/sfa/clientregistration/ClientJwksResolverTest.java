@@ -34,7 +34,7 @@ class ClientJwksResolverTest {
 
   @Test
   void embedsJwksFromBaseDirConvention() throws Exception {
-    Path baseDir = Path.of("test-keys/client-jwks").toAbsolutePath();
+    Path baseDir = Path.of("client-jwks").toAbsolutePath();
     config
         .getConfig()
         .putSingle(
@@ -50,7 +50,7 @@ class ClientJwksResolverTest {
   @Test
   void embedsJwksFromExplicitUriMapping() throws Exception {
     Path jwksPath =
-        Path.of("test-keys/client-jwks/SW-TPP-DEMO-001/jwks.json").toAbsolutePath();
+        Path.of("client-jwks/SW-TPP-DEMO-001/jwks.json").toAbsolutePath();
     config
         .getConfig()
         .add(
@@ -70,7 +70,7 @@ class ClientJwksResolverTest {
 
   @Test
   void applyClaimsToClientUsesEmbeddedJwksWhenAvailable() throws Exception {
-    Path baseDir = Path.of("test-keys/client-jwks").toAbsolutePath();
+    Path baseDir = Path.of("client-jwks").toAbsolutePath();
     config
         .getConfig()
         .putSingle(
@@ -103,7 +103,7 @@ class ClientJwksResolverTest {
             claims.getSoftwareClientUri(),
             claims.getSoftwareVersion());
 
-    Path baseDir = Path.of("test-keys/client-jwks").toAbsolutePath();
+    Path baseDir = Path.of("client-jwks").toAbsolutePath();
     config
         .getConfig()
         .putSingle(
