@@ -1558,6 +1558,9 @@
           ],
           "signature-algorithm": [
             "PS256"
+          ],
+          "poc-client-jwks-base-dir": [
+            "file:/opt/keycloak/data/client-jwks"
           ]
         }
       },
