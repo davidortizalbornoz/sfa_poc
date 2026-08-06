@@ -18,8 +18,9 @@ fi
 
 run_maven() {
   # -B: modo batch, muestra progreso sin prompts interactivos.
-  log "Ejecutando: mvn -B test package"
-  mvn -B test package
+  # -DskipTests: el build del provider no requiere Keycloak en ejecución.
+  log "Ejecutando: mvn -B package -DskipTests"
+  mvn -B package -DskipTests
 }
 
 if command -v mvn >/dev/null 2>&1; then
@@ -47,7 +48,7 @@ else
   docker pull maven:3.9-eclipse-temurin-17
 
   log "Iniciando contenedor Maven (descarga de dependencias visible abajo)"
-  docker "${docker_args[@]}" maven:3.9-eclipse-temurin-17 mvn -B test package
+  docker "${docker_args[@]}" maven:3.9-eclipse-temurin-17 mvn -B package -DskipTests
 fi
 
 log "Build completado"

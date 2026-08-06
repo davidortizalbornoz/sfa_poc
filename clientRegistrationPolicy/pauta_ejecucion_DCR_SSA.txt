@@ -1,5 +1,5 @@
 
-PAUTA DE EJECUCION
+PAUTA DE EJECUCION PARA REGISTRO DE FINTECH A TRAVES DE DCR & SSA
 
 >>Definir contenidos para las variables en ssa.env
 
