@@ -155,7 +155,10 @@ public final class SfaSoftwareStatementValidator {
   }
 
   public static void applyClaimsToClient(
-      ClientRepresentation client, SfaSoftwareStatementClaims claims) {
+      ClientRepresentation client,
+      SfaSoftwareStatementClaims claims,
+      ComponentModel config)
+      throws ClientRegistrationPolicyException {
     SoftwareStatementExtractor.ensureClientAttributes(client);
 
     if (client.getClientId() == null || client.getClientId().isBlank()) {
@@ -177,9 +180,7 @@ public final class SfaSoftwareStatementValidator {
       client.getAttributes().put("sfa.software_version", claims.getSoftwareVersion());
     }
 
-    client.getAttributes().put("use.jwks.url", "true");
-    client.getAttributes().put("use.jwks.string", "false");
-    client.getAttributes().put("jwks.url", claims.getSoftwareJwksUri());
+    applyClientJwksAttributes(client, claims, config);
     client.getAttributes().put("token.endpoint.auth.signing.alg", "PS256");
     client.getAttributes().put("request.object.signature.alg", "PS256");
     client.getAttributes().put("use.refresh.tokens", "true");
@@ -195,6 +196,25 @@ public final class SfaSoftwareStatementValidator {
     client.setStandardFlowEnabled(true);
     client.setDirectAccessGrantsEnabled(false);
     client.setClientAuthenticatorType("client-jwt");
+  }
+
+  private static void applyClientJwksAttributes(
+      ClientRepresentation client,
+      SfaSoftwareStatementClaims claims,
+      ComponentModel config)
+      throws ClientRegistrationPolicyException {
+    String embeddedJwks = ClientJwksResolver.resolveEmbeddedJwks(config, claims);
+    client.getAttributes().put("jwks.url", claims.getSoftwareJwksUri());
+
+    if (embeddedJwks != null) {
+      client.getAttributes().put("use.jwks.url", "false");
+      client.getAttributes().put("use.jwks.string", "true");
+      client.getAttributes().put("jwks.string", embeddedJwks);
+      return;
+    }
+
+    client.getAttributes().put("use.jwks.url", "true");
+    client.getAttributes().put("use.jwks.string", "false");
   }
 
   private static SfaSoftwareStatementClaims toClaims(JsonNode claims) {

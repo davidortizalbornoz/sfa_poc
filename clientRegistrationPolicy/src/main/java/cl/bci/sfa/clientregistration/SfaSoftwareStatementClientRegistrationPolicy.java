@@ -52,6 +52,6 @@ public class SfaSoftwareStatementClientRegistrationPolicy implements ClientRegis
     ClientRepresentation client = context.getClient();
     boolean inlineJwks = SoftwareStatementExtractor.hasInlineJwks(context);
     SfaSoftwareStatementValidator.enforceRequestMetadata(client, claims, inlineJwks, context);
-    SfaSoftwareStatementValidator.applyClaimsToClient(client, claims);
+    SfaSoftwareStatementValidator.applyClaimsToClient(client, claims, componentModel);
   }
 }

@@ -20,6 +20,8 @@ public class SfaSoftwareStatementClientRegistrationPolicyFactory
   public static final String CONFIG_MAX_STATEMENT_AGE_SECONDS = "max-statement-age-seconds";
   public static final String CONFIG_SIGNATURE_ALGORITHM = "signature-algorithm";
   public static final String CONFIG_DIRECTORY_PUBLIC_KEY_PEM = "directory-public-key-pem";
+  public static final String CONFIG_POC_CLIENT_JWKS_BASE_DIR = "poc-client-jwks-base-dir";
+  public static final String CONFIG_POC_CLIENT_JWKS_URI_MAPPINGS = "poc-client-jwks-uri-mappings";
 
   @Override
   public ClientRegistrationPolicy create(KeycloakSession session, ComponentModel model) {
@@ -66,6 +68,21 @@ public class SfaSoftwareStatementClientRegistrationPolicyFactory
         .helpText(
             "Optional RSA public key PEM used when directory JWKS is unavailable (local POC only)")
         .type(ProviderConfigProperty.TEXT_TYPE)
+        .add()
+        .property()
+        .name(CONFIG_POC_CLIENT_JWKS_BASE_DIR)
+        .label("POC client JWKS base directory")
+        .helpText(
+            "Optional file: URI base path. Local JWKS per client at {base}/{software_id}/jwks.json "
+                + "is embedded at registration (no HTTP fetch). Example: file:/opt/keycloak/data/client-jwks")
+        .type(ProviderConfigProperty.STRING_TYPE)
+        .add()
+        .property()
+        .name(CONFIG_POC_CLIENT_JWKS_URI_MAPPINGS)
+        .label("POC client JWKS URI mappings")
+        .helpText(
+            "Optional overrides: software_jwks_uri=file:/path/to/jwks.json (one entry per client)")
+        .type(ProviderConfigProperty.MULTIVALUED_STRING_TYPE)
         .add()
         .build();
   }
