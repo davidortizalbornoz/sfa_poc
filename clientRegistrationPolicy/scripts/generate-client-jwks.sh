@@ -42,6 +42,7 @@ try:
         Encoding,
         NoEncryption,
         PrivateFormat,
+        PublicFormat,
     )
 except ImportError:
     raise SystemExit("Instala cryptography: pip install cryptography")
@@ -83,11 +84,16 @@ jwks = {
 private_pem = private_key.private_bytes(
     Encoding.PEM, PrivateFormat.PKCS8, NoEncryption()
 )
+public_pem = private_key.public_key().public_bytes(
+    Encoding.PEM, PublicFormat.SubjectPublicKeyInfo
+)
 
 (out_dir / "private.pem").write_bytes(private_pem)
+(out_dir / "public.pem").write_bytes(public_pem)
 (out_dir / "jwks.json").write_text(json.dumps(jwks, indent=2) + "\n")
 
 print(out_dir / "jwks.json")
 print(f"kid={kid}", file=sys.stderr)
 print(f"private_key={out_dir / 'private.pem'}", file=sys.stderr)
+print(f"public_key={out_dir / 'public.pem'}", file=sys.stderr)
 PY

@@ -1,4 +1,18 @@
+import { readFileSync } from "node:fs";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
+
 import type { AppConfig, FintechAConfig, M2mConfig } from "./types.js";
+
+interface JwksFile {
+  keys?: Array<{ kid?: string; use?: string; alg?: string }>;
+}
+
+const TPP_CLIENT_ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
+const CLIENT_JWKS_ROOT = join(
+  TPP_CLIENT_ROOT,
+  "../clientRegistrationPolicy/client-jwks",
+);
 
 function required(name: string): string {
   const value = process.env[name];
@@ -6,6 +20,21 @@ function required(name: string): string {
     throw new Error(`Falta la variable de entorno ${name}`);
   }
   return value;
+}
+
+function loadKidFromJwks(jwksPath: string): string {
+  const jwks = JSON.parse(readFileSync(jwksPath, "utf8")) as JwksFile;
+  const keys = jwks.keys ?? [];
+  const signingKey =
+    keys.find((key) => key.use === "sig" && key.kid) ??
+    keys.find((key) => key.alg === "PS256" && key.kid) ??
+    keys.find((key) => key.kid);
+
+  if (!signingKey?.kid) {
+    throw new Error(`JWKS sin kid utilizable en ${jwksPath}`);
+  }
+
+  return signingKey.kid;
 }
 
 export function loadConfig(): AppConfig {
@@ -50,17 +79,24 @@ export function loadM2mConfig(): M2mConfig {
 export function loadFintechAConfig(): FintechAConfig {
   const baseUrl = required("KEYCLOAK_BASE_URL").replace(/\/$/, "");
   const realm = required("KEYCLOAK_REALM");
+  const clientId = required("FINTECH_CLIENT_ID");
+  const clientJwksDir = join(CLIENT_JWKS_ROOT, clientId);
+  const jwksPath =
+    process.env.FINTECH_JWKS_PATH ?? join(clientJwksDir, "jwks.json");
+  const kid = process.env.FINTECH_KID ?? loadKidFromJwks(jwksPath);
 
   return {
     baseUrl,
     realm,
-    clientId: required("FINTECH_A_CLIENT_ID"),
-    scope: process.env.FINTECH_A_SCOPE ?? "accounts:read",
-    kid: required("FINTECH_A_KID"),
-    privateKeyPath: required("FINTECH_A_PRIVATE_KEY_PATH"),
-    jwksPath: process.env.FINTECH_A_JWKS_PATH ?? "keys/fintech-a/jwks.json",
+    clientId,
+    scope: process.env.FINTECH_SCOPE ?? "accounts:read",
+    kid,
+    privateKeyPath:
+      process.env.FINTECH_PRIVATE_KEY_PATH ??
+      join(clientJwksDir, "private.pem"),
+    jwksPath,
     resourceServerUrl:
-      process.env.FINTECH_A_RESOURCE_SERVER_URL ??
+      process.env.FINTECH_RESOURCE_SERVER_URL ??
       process.env.RESOURCE_SERVER_URL ??
       "http://localhost:9090/cities",
     tokenEndpoint: `${baseUrl}/realms/${realm}/protocol/openid-connect/token`,

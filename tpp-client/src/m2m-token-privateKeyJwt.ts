@@ -53,21 +53,51 @@ function printTokenCurl(
   console.log(`  -d 'scope=${scope}'`);
   console.log("");
   console.log(
-    "(El client_assertion y el proof DPoP son de un solo uso; ejecuta npm run fintech-a-m2m para generar nuevos.)",
+    "(El client_assertion y el proof DPoP son de un solo uso; ejecuta npm run fintech-m2m para generar nuevos.)",
   );
 }
 
-function printResourceServerCurl(
+function printResourceServerRequest(
   accessToken: string,
   dpopProof: string,
   url: string,
 ): void {
   console.log("");
-  console.log("=== curl GET Resource Server (Authorization: DPoP) ===");
-  console.log(`curl -s '${url}' \\`);
-  console.log(`  -H 'Authorization: DPoP ${accessToken}' \\`);
-  console.log(`  -H 'DPoP: ${dpopProof}' \\`);
-  console.log(`  -H 'Accept: application/json'`);
+  console.log("=== DPoP proof para Resource Server ===");
+  console.log(`resource_url:   ${url}`);
+  console.log(`dpop_proof:     ${dpopProof}`);
+  console.log("");
+  console.log("=== curl GET /cities ===");
+  console.log(`curl -s ${url} \\`);
+  console.log(`  -H "Authorization: DPoP ${accessToken}" \\`);
+  console.log(`  -H "DPoP: ${dpopProof}" \\`);
+  console.log(`  -H "Accept: application/json"`);
+  console.log("");
+  console.log(
+    "(El proof expira en ~5 min; genera uno nuevo por request si falla.)",
+  );
+}
+
+function tokenRequestError(
+  status: number,
+  data: TokenResponse,
+  rawBody: string,
+  config: ReturnType<typeof loadFintechAConfig>,
+): Error {
+  const description = data.error_description ?? rawBody;
+  let message = `client_credentials fallo (${status}): ${data.error ?? "unknown"} - ${description}`;
+
+  if (
+    data.error === "invalid_client" &&
+    description.includes("Unable to load public key")
+  ) {
+    message +=
+      `\n\nKeycloak no encuentra la clave publica con kid "${config.kid}" embebida en el cliente OAuth.` +
+      `\nTras regenerar client-jwks/${config.clientId}/ (generate-client-jwks.sh), vuelve a registrar el cliente via DCR` +
+      `\npara que Keycloak embeba el jwks.json actual (${config.jwksPath}).`;
+  }
+
+  return new Error(message);
 }
 
 async function requestClientCredentialsToken(
@@ -155,8 +185,11 @@ async function requestClientCredentialsToken(
     }
 
     if (!retryResponse.ok) {
-      throw new Error(
-        `client_credentials fallo (${retryResponse.status}): ${data.error ?? "unknown"} - ${data.error_description ?? retryText}`,
+      throw tokenRequestError(
+        retryResponse.status,
+        data,
+        retryText,
+        config,
       );
     }
 
@@ -164,9 +197,7 @@ async function requestClientCredentialsToken(
   }
 
   if (!response.ok) {
-    throw new Error(
-      `client_credentials fallo (${response.status}): ${data.error ?? "unknown"} - ${data.error_description ?? text}`,
-    );
+    throw tokenRequestError(response.status, data, text, config);
   }
 
   return data;
@@ -184,7 +215,9 @@ async function main(): Promise<void> {
     kid: config.kid,
   });
 
-  console.log("=== Cliente FINTECH-A (client_credentials + private_key_jwt PS256 + DPoP) ===");
+  console.log(
+    `=== Cliente ${config.clientId} (client_credentials + private_key_jwt PS256 + DPoP) ===`,
+  );
   console.log(`Realm:      ${config.realm}`);
   console.log(`Client:     ${config.clientId}`);
   console.log(`Scope:      ${config.scope}`);
@@ -232,7 +265,8 @@ async function main(): Promise<void> {
   console.log("=== Payload JWT (sin verificar firma) ===");
   console.log(JSON.stringify(payload, null, 2));
 
-  const resourceUrl = config.resourceServerUrl;
+  const resourceUrl =
+    config.resourceServerUrl || "http://localhost:9090/cities";
   const resourceProof = createDpopProof({
     privateKey: dpopKeys.privateKey,
     publicJwk: dpopKeys.publicJwk,
@@ -241,15 +275,14 @@ async function main(): Promise<void> {
     accessToken: tokens.access_token,
   });
 
-  console.log("");
-  console.log("=== DPoP proof para Resource Server ===");
-  console.log(`resource_url:   ${resourceUrl}`);
-  console.log(`dpop_proof:     ${resourceProof}`);
+  printResourceServerRequest(
+    tokens.access_token,
+    resourceProof,
+    resourceUrl,
+  );
 
-  printResourceServerCurl(tokens.access_token, resourceProof, resourceUrl);
-
   console.log("");
-  console.log("Flujo FINTECH-A M2M completado.");
+  console.log(`Flujo ${config.clientId} M2M completado.`);
 }
 
 main().catch((error: unknown) => {

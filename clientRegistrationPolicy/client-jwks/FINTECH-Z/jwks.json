@@ -1,0 +1,12 @@
+{
+  "keys": [
+    {
+      "kid": "fintech-z-50e7bbb57c81",
+      "kty": "RSA",
+      "alg": "PS256",
+      "use": "sig",
+      "e": "AQAB",
+      "n": "nwL05st8-pHE_zq5qQrlIWgS7LHp9eqYD6vhieM-WzspZuW1A1-q9cl51iETNVWo4k7jR2kCVtWWQ29xl3cIKSLjz6_85vxfYJMpUTqztz1VEiWxbAWcB2rwBMpcIirzPBpk3ey-HLwgcUThhi_r6UChJYuP18V8ppvaBH8Do2T0ufC5p6Wi9znUDcMhAbzRIivw9lMehfK0E1eb4Ix30xBO1IwKpkIOI9VbsGQ9_NrJXcfMTQ-l78QPHtsO8KhWbFL0cUyXxs_nfjQCfbUjChJ9m_fAEAZ_6cxoTG7NFYpqAcZZKsGgMbmBJp-ES5jy1g616W-qZky1YgyGWOAORQ"
+    }
+  ]
+}
