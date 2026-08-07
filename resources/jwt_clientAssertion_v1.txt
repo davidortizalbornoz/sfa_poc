@@ -1,0 +1,17 @@
+eyJhbGciOiJQUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImZpbnRlY2gtYS0xIn0.eyJpc3MiOiJGSU5URUNILUEiLCJzdWIiOiJGSU5URUNILUEiLCJhdWQiOiJodHRwOi8vc2ZhLmxvY2FsdGVzdC5tZTo4MDgwL3JlYWxtcy9zZmEtcG9jL3Byb3RvY29sL29wZW5pZC1jb25uZWN0L3Rva2VuIiwianRpIjoiVDBtWmMybWZVT0ZoemFxd0pubUw1dyIsImlhdCI6MTc4NjA0NTI5MCwiZXhwIjoxNzg2MDQ1NTkwfQ.CKrA2jcPRW2z3E0mfva0BOcgPkMYdCQC35dbgekKfGre4v4F3rcQAKw4IdtA-vtdCXRWypBRnb6sIWyyU6H4QmdIn6cUuLcjA76ZTxGcEblybvMYy5BqeJ3f0svyuhsAdjR2Iz-5dMpaRkT9B5Oj08BkUnbUmlaumyAKwgmxt3O7Mt2Wdr1J46EScLzwUq-6lMvM0X_-67KXBGKhE8uxYigkjXaHBr-F23Aka6Wt5WCNGFx6oQJHQHFdQ-97W-l_iZLG9WE7-JjHpDEnHw0_lEHZD_ddseR5upAHOFR4Ok1bg2Qr8-L94YZE542hqMh8RcyhCku1lsHPe99wKUffAQ
+
+{
+  "alg": "PS256",
+  "typ": "JWT",
+  "kid": "fintech-a-1"
+}
+
+{
+  "iss": "FINTECH-A",
+  "sub": "FINTECH-A",
+  "aud": "http://sfa.localtest.me:8080/realms/sfa-poc/protocol/openid-connect/token",
+  "jti": "T0mZc2mfUOFhzaqwJnmL5w",
+  "iat": 1786045290,
+  "exp": 1786045590
+}
+

@@ -1,0 +1,30 @@
+eyJ0eXAiOiJkcG9wK2p3dCIsImFsZyI6IkVTMjU2IiwiandrIjp7Imt0eSI6IkVDIiwiY3J2IjoiUC0yNTYiLCJ4IjoiOEU5dzVrazRYNGRGUmRoOUktVW9fbjZldHlVd0JyNEZyc3lyZDk5a285QSIsInkiOiI0cFUxbWhpd19yZl90cWhGQ29TcHc1Rml5M0NhWDVER2pIMHBKblZDODhnIn19.eyJqdGkiOiJoWS1PVG5ENzBYQkE1My1hS3JvZUlBIiwiaHRtIjoiR0VUIiwiaHR1IjoiaHR0cDovL2xvY2FsaG9zdDo5MDkwL2NpdGllcyIsImlhdCI6MTc4NjA2MTU1MCwiYXRoIjoieWFxdk5ObUhJQkRxQ0NvOXY2UHNTMDhkajd3aXpYS1FZeTdmdG1zX2tMSSJ9.vdNtTMfBQlfBpvTs7DrRwrYV7ayPxbG-SjjR4e0WOtAkaP7kU41EivhIE_YSAb4Dc_OpCFfhBUD3G_nSnhCxRA
+
+headers
+{
+  "typ": "dpop+jwt",
+  "alg": "ES256",
+  "jwk": {
+    "kty": "EC",
+    "crv": "P-256",
+    "x": "8E9w5kk4X4dFRdh9I-Uo_n6etyUwBr4Frsyrd99ko9A",
+    "y": "4pU1mhiw_rf_tqhFCoSpw5Fiy3CaX5DGjH0pJnVC88g"
+  }
+}
+
+claims
+{
+  "jti": "hY-OTnD70XBA53-aKroeIA",
+  "htm": "GET",
+  "htu": "http://localhost:9090/cities",
+  "iat": 1786061550,
+  "ath": "yaqvNNmHIBDqCCo9v6PsS08dj7wizXKQYy7ftms_kLI"
+}
+
+public key
+{
+  "kty": "EC",
+  "crv": "P-256",
+  "x": "8E9w5kk4X4dFRdh9I-Uo_n6etyUwBr4Frsyrd99ko9A",
+  "y": "4pU1mhiw_rf_tqhFCoSpw5Fiy3CaX5DGjH0pJnVC88g"
+}
